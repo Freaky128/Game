@@ -224,6 +224,28 @@ void GameC::render() {
 }
 
 void GameC::clean() {
+	/*delete& Player;
+	delete& NPC;
+	delete& NPC2;
+	delete& NPC3;
+	for (auto& c : colliders) // throws exception i think
+	{
+		delete c;
+	}*/
+	
+	Player.destroy();
+	NPC.destroy();
+	NPC2.destroy();
+	NPC3.destroy();
+	mapTex.destroy();
+	delete map;
+	for (auto& c : colliders)
+	{
+		c->destroy();
+	}
+
+	manager.refresh();
+
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();

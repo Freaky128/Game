@@ -133,8 +133,7 @@ public:
 		for (auto i(0u); i < maxGroups; i++)
 		{
 			auto& v(groupedEntities[i]);
-			v.erase(
-				std::remove_if(std::begin(v), std::end(v),
+			v.erase(std::remove_if(std::begin(v), std::end(v),
 					[i](Entity* mEntity)
 					{
 						return !mEntity->isActive() || !mEntity->hasGroup(i);
