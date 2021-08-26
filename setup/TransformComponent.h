@@ -62,9 +62,9 @@ public:
 	TransformComponent(int iw, int ih, int fw, int fh, int sc)
 	{
 		position.x = 308; // magic numbers
-		std::cout << position.x << std::endl;
+		//std::cout << position.x << std::endl;
 		position.y = 274;
-		std::cout << position.y << std::endl;
+		//std::cout << position.y << std::endl;
 		height = ih;
 		//std::cout << height << std::endl;
 		width = iw;
