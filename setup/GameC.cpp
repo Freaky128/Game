@@ -25,6 +25,7 @@ auto& Player(manager.addEntity());
 auto& mapTex(manager.addEntity());
 auto& NPC(manager.addEntity());
 auto& NPC2(manager.addEntity());
+auto& NPC3(manager.addEntity());
 
 //const char* mapfile = "assets/terrain_ss.png";
 

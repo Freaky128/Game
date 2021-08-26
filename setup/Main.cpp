@@ -1,3 +1,7 @@
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <SDL.h>
 #include "GameC.h"
 
@@ -18,6 +22,8 @@ int main(int argc, char* args[]) {
 	}
 
 	gc.clean();
+
+	_CrtDumpMemoryLeaks();
 
 	return 0;
 }
