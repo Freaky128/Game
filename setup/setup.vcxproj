@@ -37,6 +37,7 @@
     <ClInclude Include="ECS.h" />
     <ClInclude Include="GameC.h" />
     <ClInclude Include="gameObject.h" />
+    <ClInclude Include="LvlColliderEditor.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapComponent.h" />

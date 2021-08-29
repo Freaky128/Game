@@ -3,6 +3,7 @@
 #include "Components.h"
 #include "Map.h"
 #include "Collision.h"
+#include "LvlColliderEditor.h"
 
 #define SCALE 4
 
@@ -19,6 +20,7 @@ SDL_Rect GameC::camera = { 0,0,0,0 };
 //std::vector<ColliderComponent*>GameC::colliders;
 
 bool GameC::run = false;
+bool LvlColliderEditor::mouseDown = false;
 
 auto& Player(manager.addEntity());
 //auto& wall(manager.addEntity());
@@ -193,6 +195,8 @@ void GameC::update() {
 	{
 			e->getComponent<NPCbehaviour>().CollisionDetection(playerCol);		
 	}
+
+	LvlColliderEditor::update();
 
 	/*for (auto t : tiles)
 	{

@@ -92,5 +92,8 @@
     <ClInclude Include="NPCbehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LvlColliderEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
