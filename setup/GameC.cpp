@@ -20,7 +20,6 @@ SDL_Rect GameC::camera = { 0,0,0,0 };
 //std::vector<ColliderComponent*>GameC::colliders;
 
 bool GameC::run = false;
-bool LvlColliderEditor::mouseDown = false;
 
 auto& Player(manager.addEntity());
 //auto& wall(manager.addEntity());
@@ -112,6 +111,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	//wall.addComponent<SpriteComponent>("assets/collider.png");
 	//wall.addComponent<ColliderComponent>("Wall");
 	//wall.addGroup(groupMap);
+
+	LvlColliderEditor::init();
 }
 
 auto& mapStuff(manager.getGroup(GameC::groupMap));
@@ -223,6 +224,8 @@ void GameC::render() {
 	{
 		c->draw();
 	}
+
+	LvlColliderEditor::draw();
 
 	SDL_RenderPresent(renderer);
 }

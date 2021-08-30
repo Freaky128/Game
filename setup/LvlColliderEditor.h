@@ -6,27 +6,21 @@ class LvlColliderEditor
 {
 public:
 	static bool mouseDown;
-	
-	static void update()
-	{
-		if (!mouseDown)
-		{
-			if (GameC::event.type == SDL_MOUSEBUTTONDOWN && GameC::event.button.button == SDL_BUTTON_LEFT)
-			{
-				printf("WTF\n");
-				mouseDown = true;
+	static int ix;
+	static int iy;
 
-			}
-		}
-		else
-		{
-			if (GameC::event.type == SDL_MOUSEBUTTONUP)
-			{
-				printf("UP\n");
-				mouseDown = false;
-			}
-		}
-	}
+	static int fx;
+	static int fy;
+
+	static int x, y;
+
+	static SDL_Rect destR, srcR;
+	static SDL_Texture* tex;
+	
+	static void update();
+	static void init();
+	static void draw();
+	
 
 private:
 	
