@@ -26,7 +26,6 @@ auto& Player(manager.addEntity());
 auto& mapTex(manager.addEntity());
 auto& NPC(manager.addEntity());
 auto& NPC2(manager.addEntity());
-auto& NPC3(manager.addEntity());
 
 //const char* mapfile = "assets/terrain_ss.png";
 
@@ -243,7 +242,6 @@ void GameC::clean() {
 	Player.destroy();
 	NPC.destroy();
 	NPC2.destroy();
-	NPC3.destroy();
 	mapTex.destroy();
 	delete map;
 	for (auto& c : colliders)
@@ -261,4 +259,20 @@ void GameC::clean() {
 
 bool GameC::running() {
 	return run; 
+}
+
+SDL_Rect GameC::mouseCol(const SDL_Rect& mRect)
+{
+	SDL_Rect Col;
+
+	for (auto& c : colliders)
+	{
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCol, mRect))
+		{
+			Col = c->getComponent<ColliderComponent>().collider;
+			c->destroy();
+			return Col;
+		}
+	}
 }
