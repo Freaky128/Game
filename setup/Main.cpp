@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include "GameC.h"
+#include "LvlColliderEditor.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 576
@@ -20,6 +21,8 @@ int main(int argc, char* args[]) {
 		gc.render();
 		 
 	}
+
+	LvlColliderEditor::write();
 
 	gc.clean();
 

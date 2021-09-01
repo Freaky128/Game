@@ -82,8 +82,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	//map->LoadMap("assets/map.map", 25, 20); // magic numbers
 
 	map = new Map();
-	map->LoadCollidersRect("assets/colliders_rect.txt", SCALE);//magic numbers
-	map->LoadCollidersTri("assets/colliders_tri.txt", SCALE);//magic numbers
+	map->LoadCollidersRect("assets/colliders_rect_write.txt", SCALE);
+	map->LoadCollidersTri("assets/colliders_tri.txt", SCALE);
 	
 	Player.addComponent<TransformComponent>(12,14,12,14,SCALE); // magic numbers
 	Player.addComponent<SpriteComponent>("Assets/T_sprite_sheet.png", true, "Player");
@@ -104,7 +104,7 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	NPC2.addGroup(groupEnemies);
 
 	camera.x = (434 * SCALE) - 308; //magic numbers
-	camera.y = (353 * SCALE) - 274;
+	camera.y = (400 * SCALE) - 274;
 
 	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 20, 300, 1);
 	//wall.addComponent<SpriteComponent>("assets/collider.png");

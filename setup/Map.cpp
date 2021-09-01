@@ -77,15 +77,15 @@ Map::~Map()
 	int index;
 
 	char c;
-	std::fstream mapFile;
-	mapFile.open(path);
+	std::fstream colliderFileRect;
+	colliderFileRect.open(path);
 
 	int temp = 0;
 	int num = 0;
 
 	for (index = 0; index < 3; index++)
 	{
-		mapFile.get(c);
+		colliderFileRect.get(c);
 		temp = atoi(&c);
 
 		if ((index != 0) && (num != 0))
@@ -94,17 +94,17 @@ Map::~Map()
 		}
 		num += temp;
 	}
-	mapFile.ignore();
+	colliderFileRect.ignore();
 	numColliders = num;
 
 	printf("collider num %d\n", numColliders);
 
 	for (index = 0; index < numColliders; index++)
 	{
-		xpos = Map::GetCoordinates(mapFile, c);
-		ypos = Map::GetCoordinates(mapFile, c);
-		width = Map::GetCoordinates(mapFile, c);
-		height = Map::GetCoordinates(mapFile, c);
+		xpos = Map::GetCoordinates(colliderFileRect, c);
+		ypos = Map::GetCoordinates(colliderFileRect, c);
+		width = Map::GetCoordinates(colliderFileRect, c);
+		height = Map::GetCoordinates(colliderFileRect, c);
 
 		printf("%d\n%d\n%d\n%d\n", xpos, ypos, width, height);
 
@@ -113,7 +113,7 @@ Map::~Map()
 		tcol.addGroup(GameC::groupColliders);
 	}
 
-	mapFile.close();
+	colliderFileRect.close();
 }
 
  void Map::LoadCollidersTri(const char* path, int mapScale)

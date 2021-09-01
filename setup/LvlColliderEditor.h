@@ -23,6 +23,7 @@ public:
 	static void update();
 	static void init();
 	static void draw();
+	static void write();
 	
 
 private:

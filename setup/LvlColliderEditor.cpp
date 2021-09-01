@@ -1,7 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "LvlColliderEditor.h"
 #include "TextureManager.h"
 #include "Components.h"
 #include "Collision.h"
+#include <fstream>
 
 extern Manager manager;
 
@@ -128,11 +131,11 @@ void LvlColliderEditor::update()
 
 			if (GameC::camera.x % 4 != 0)
 			{
-				fx = fx - 2;
+				x = x - 2;
 			}
 			if (GameC::camera.y % 4 != 0)
 			{
-				fy = fy - 2;
+				y = y - 2;
 			}
 
 			printf("x:%d y:%d\n", x, y);
@@ -172,6 +175,47 @@ void LvlColliderEditor::update()
 	}
 
 	//TODO [Matthew] add export function, possibly numbering system - don't think I'll worry
+}
+
+void LvlColliderEditor::write()
+{
+	int index1;
+	int index2;
+	char buffer [16];
+	
+	FILE* colliderFileRectW;
+	colliderFileRectW = fopen("assets/colliders_rect_write.txt","a");
+
+	for (index1 = 0; index1 < colVec.size(); index1++)
+	{
+		for (index2 = 0; index2 < 4; index2++)
+		{
+			if ((colVec[index1][index2] / 4) < 1000)
+			{
+				fputs("0", colliderFileRectW);
+				if ((colVec[index1][index2] / 4) < 100)
+				{
+					fputs("0", colliderFileRectW);
+					if ((colVec[index1][index2] / 4) < 10)
+					{
+						fputs("0", colliderFileRectW);
+					}
+				}
+			}
+			
+			sprintf(buffer, "%d", (colVec[index1][index2] / 4));
+			fputs(buffer, colliderFileRectW);
+			
+			if (index2 < 3) 
+			{
+				fputs(",", colliderFileRectW);
+			}
+		}
+		fputs("\n", colliderFileRectW);
+	}
+
+	printf("done\n");
+	fclose(colliderFileRectW);
 }
 
 void LvlColliderEditor::draw()
