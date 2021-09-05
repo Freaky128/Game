@@ -106,7 +106,7 @@ Map::~Map()
 		width = Map::GetCoordinates(colliderFileRect, c);
 		height = Map::GetCoordinates(colliderFileRect, c);
 
-		printf("%d\n%d\n%d\n%d\n", xpos, ypos, width, height);
+		printf("x: %d\ny: %d\nw: %d\nh: %d\n", xpos, ypos, width, height);
 
 		auto& tcol(manager.addEntity());
 		tcol.addComponent<ColliderComponent>("terrain", xpos * mapScale, ypos * mapScale, width * mapScale, height * mapScale);
@@ -127,52 +127,49 @@ Map::~Map()
 	 int index;
 	 int index2;
 	 int loop = 0;
-	 char Direc;
+	 char direc;
 
 	 char c;
 	 std::fstream colliderFileTri;
 	 colliderFileTri.open(path);
 
-	 colliderFileTri.get(c);
-	 numColliders = atoi(&c);
+	 int temp = 0;
+	 int num = 0;
+
+	 for (index = 0; index < 3; index++)
+	 {
+		 colliderFileTri.get(c);
+		 temp = atoi(&c);
+
+		 if ((index != 0) && (num != 0))
+		 {
+			 num = num * 10;
+		 }
+		 num += temp;
+	 }
 	 colliderFileTri.ignore();
+	 numColliders = num;
+
+	 printf("num of colliders: %d\n", numColliders);
 
 	 for (index = 0; index < numColliders; index++)
 	 {
 		 colliderFileTri.get(c);
-		 Direc = c;
+		 direc = c;
 		 colliderFileTri.ignore();
 
-		 printf("%c\n", Direc);
+		 printf("collider direction: %c\n", direc);
 		 
 		 Sxpos = Map::GetCoordinates(colliderFileTri, c);
 		 Sypos = Map::GetCoordinates(colliderFileTri, c);
 		 Fxpos = Map::GetCoordinates(colliderFileTri, c);
 		 Fypos = Map::GetCoordinates(colliderFileTri, c);
 
-		 printf("%d\n%d\n%d\n%d\n", Sxpos, Sypos, Fxpos, Fypos);
+		 printf("Sx: %d\nSy: %d\nFx: %d\nFy: %d\n", Sxpos, Sypos, Fxpos, Fypos);
 
-		 loop = (Fxpos - Sxpos) + 1;
-
-		 if (Direc == 'd')
-		 {
-			 for (index2 = 0; index2 < loop; index2++)
-			 {
-				 auto& tcol(manager.addEntity());
-				 tcol.addComponent<ColliderComponent>("terrain", (Sxpos + index2) * mapScale, (Sypos + index2) * mapScale, 1 * mapScale, 1 * mapScale);
-				 tcol.addGroup(GameC::groupColliders);
-			 }
-		 }
-		 else
-		 {
-			 for (index2 = 0; index2 < loop; index2++)
-			 {
-				 auto& tcol(manager.addEntity());
-				 tcol.addComponent<ColliderComponent>("terrain", (Sxpos + index2) * mapScale, (Sypos - index2) * mapScale, 1 * mapScale, 1 * mapScale);
-				 tcol.addGroup(GameC::groupColliders);
-			 }
-		 }
-
+		auto& tcol(manager.addEntity());
+		tcol.addComponent<ColliderComponentTri>(direc, Sxpos * mapScale, Sypos * mapScale, Fxpos * mapScale, Fypos * mapScale, mapScale);
+		tcol.addGroup(GameC::groupTriColliders);
 	 }
 	 colliderFileTri.close();
  }

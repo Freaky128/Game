@@ -9,3 +9,4 @@
 #include "TileComponent.h"
 #include "MapComponent.h"
 #include "NPCbehaviour.h"
+#include "ColliderComponentTri.h"

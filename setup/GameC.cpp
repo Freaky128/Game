@@ -82,7 +82,7 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	//map->LoadMap("assets/map.map", 25, 20); // magic numbers
 
 	map = new Map();
-	map->LoadCollidersRect("assets/colliders_rect_write.txt", SCALE);
+	map->LoadCollidersRect("assets/colliders_rect.txt", SCALE);
 	map->LoadCollidersTri("assets/colliders_tri.txt", SCALE);
 	
 	Player.addComponent<TransformComponent>(12,14,12,14,SCALE); // magic numbers
@@ -118,6 +118,7 @@ auto& mapStuff(manager.getGroup(GameC::groupMap));
 auto& players(manager.getGroup(GameC::groupPlayers));
 auto& enemies(manager.getGroup(GameC::groupEnemies));
 auto& colliders(manager.getGroup(GameC::groupColliders));
+auto& triColliders(manager.getGroup(GameC::groupTriColliders));
 
 void GameC::events() {
 	
@@ -155,6 +156,23 @@ void GameC::update() {
 	for (auto& c : colliders)
 	{
 		c->getComponent<ColliderComponent>().update();
+	}
+	for (auto& t : triColliders)
+	{
+		t->getComponent<ColliderComponentTri>().update();
+	}
+	
+	for (auto& t : triColliders)
+	{
+		SDL_Point tSP = t->getComponent<ColliderComponentTri>().startP;
+		SDL_Point tFP = t->getComponent<ColliderComponentTri>().finalP;
+		char dir = t->getComponent<ColliderComponentTri>().direction;
+		if (Collision::AARL(playerCol, tSP, tFP, dir))
+		{
+			camera.x = cameraPos.x;
+			camera.y = cameraPos.y;
+			printf("hit tri\n");
+		}
 	}
 	
 	for (auto& c : colliders)
@@ -223,6 +241,10 @@ void GameC::render() {
 	{
 		c->draw();
 	}
+	for (auto& t : triColliders)
+	{
+		t->draw();
+	}
 
 	LvlColliderEditor::draw();
 
@@ -245,6 +267,10 @@ void GameC::clean() {
 	mapTex.destroy();
 	delete map;
 	for (auto& c : colliders)
+	{
+		c->destroy();
+	}
+	for (auto& c : triColliders)
 	{
 		c->destroy();
 	}
