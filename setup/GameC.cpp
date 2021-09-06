@@ -211,6 +211,17 @@ void GameC::update() {
 
 	for (auto& e : enemies)
 	{
+		for (auto& t : triColliders)
+		{
+			SDL_Point sp = t->getComponent<ColliderComponentTri>().startP;
+			SDL_Point fp = t->getComponent<ColliderComponentTri>().finalP;
+			char dir = t->getComponent<ColliderComponentTri>().direction;
+			e->getComponent<NPCbehaviour>().CollisionDetection(sp, fp, dir);
+		}
+	}
+
+	for (auto& e : enemies)
+	{
 			e->getComponent<NPCbehaviour>().CollisionDetection(playerCol);		
 	}
 
@@ -270,9 +281,9 @@ void GameC::clean() {
 	{
 		c->destroy();
 	}
-	for (auto& c : triColliders)
+	for (auto& t : triColliders)
 	{
-		c->destroy();
+		t->destroy();
 	}
 
 	manager.refresh();
@@ -287,7 +298,7 @@ bool GameC::running() {
 	return run; 
 }
 
-SDL_Rect GameC::mouseCol(const SDL_Rect& mRect)
+SDL_Rect GameC::mouseColRect(const SDL_Rect& mRect)
 {
 	SDL_Rect Col;
 
@@ -299,6 +310,24 @@ SDL_Rect GameC::mouseCol(const SDL_Rect& mRect)
 			Col = c->getComponent<ColliderComponent>().collider;
 			c->destroy();
 			return Col;
+		}
+	}
+}
+
+SDL_Point GameC::mouseColTri(const SDL_Rect& mRect)
+{
+	SDL_Point sp;
+
+	for (auto& t : triColliders)
+	{
+		SDL_Point tSPoint = t->getComponent<ColliderComponentTri>().startP;
+		SDL_Point tFPoint = t->getComponent<ColliderComponentTri>().finalP;
+		char tDir = t->getComponent<ColliderComponentTri>().direction;
+		if (Collision::AARL(mRect, tSPoint, tFPoint, tDir))
+		{
+			sp = t->getComponent<ColliderComponentTri>().startP;
+			t->destroy();
+			return sp;
 		}
 	}
 }

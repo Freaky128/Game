@@ -31,4 +31,5 @@ public:
 	
 
 	void CollisionDetection(SDL_Rect cCol);
+	void CollisionDetection(SDL_Point sp, SDL_Point fp, char dir);
 };

@@ -22,7 +22,8 @@ int main(int argc, char* args[]) {
 		 
 	}
 
-	LvlColliderEditor::write();
+	LvlColliderEditor::writeRect();
+	LvlColliderEditor::writeTri();
 
 	gc.clean();
 

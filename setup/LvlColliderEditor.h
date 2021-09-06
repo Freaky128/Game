@@ -15,15 +15,19 @@ public:
 
 	static int x, y;
 
+	static int mode;
+
 	static SDL_Rect destR, srcR;
 	static SDL_Texture* tex;
 
 	static std::vector<std::vector<int>> colVec;
+	static std::vector<std::vector<int>> triColVec;
 	
 	static void update();
 	static void init();
 	static void draw();
-	static void write();
+	static void writeRect();
+	static void writeTri();
 	
 
 private:

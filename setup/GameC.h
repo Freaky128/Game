@@ -21,7 +21,8 @@ public:
 
 	bool running();
 
-	static SDL_Rect mouseCol(const SDL_Rect& mRect);
+	static SDL_Rect mouseColRect(const SDL_Rect& mRect);
+	static SDL_Point mouseColTri(const SDL_Rect& mRect);
 
 	static SDL_Renderer* renderer;
 	static SDL_Event event;

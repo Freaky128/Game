@@ -84,3 +84,13 @@ void NPCbehaviour::CollisionDetection(SDL_Rect cCol)
 	 }
 		
 }
+
+void NPCbehaviour::CollisionDetection(SDL_Point sp, SDL_Point fp, char dir)
+{
+	SDL_Rect NPCcol = NPCcollider->collider;
+	if (Collision::AARL(NPCcol, sp, fp, dir))
+	{
+		transform->position = NPCIpos;
+		printf("hit NPC\n");
+	}
+}
