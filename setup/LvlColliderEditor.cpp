@@ -195,7 +195,7 @@ void LvlColliderEditor::update()
 			}
 		}
 	}
-	else // tri mode now remeber to add else
+	else // tri mode
 	{
 		if (currentKeyStates[SDL_SCANCODE_DELETE])
 		{
@@ -237,175 +237,177 @@ void LvlColliderEditor::update()
 				}
 			}
 		}
-	
-		if (!mouseDown)
-		{
-			if (GameC::event.type == SDL_MOUSEBUTTONDOWN && GameC::event.button.button == SDL_BUTTON_LEFT)
-			{
-				SDL_GetMouseState(&ix, &iy);
-
-				ix = (ix - (ix % 4)) + GameC::camera.x;
-				iy = (iy - (iy % 4)) + GameC::camera.y;
-
-				if (GameC::camera.x % 4 != 0)
-				{
-					ix = ix - 2;
-				}
-				if (GameC::camera.y % 4 != 0)
-				{
-					iy = iy - 2;
-				}
-
-				printf("ix:%d iy:%d\n", ix, iy);
-				mouseDown = true;
-
-			}
-		}
 		else
 		{
-			if (GameC::event.type == SDL_MOUSEBUTTONUP)
+			if (!mouseDown)
 			{
-				SDL_GetMouseState(&fx, &fy);
+				if (GameC::event.type == SDL_MOUSEBUTTONDOWN && GameC::event.button.button == SDL_BUTTON_LEFT)
+				{
+					SDL_GetMouseState(&ix, &iy);
 
-				fx = (fx - (fx % 4)) + GameC::camera.x;
-				fy = (fy - (fy % 4)) + GameC::camera.y;
+					ix = (ix - (ix % 4)) + GameC::camera.x;
+					iy = (iy - (iy % 4)) + GameC::camera.y;
+
+					if (GameC::camera.x % 4 != 0)
+					{
+						ix = ix - 2;
+					}
+					if (GameC::camera.y % 4 != 0)
+					{
+						iy = iy - 2;
+					}
+
+					printf("ix:%d iy:%d\n", ix, iy);
+					mouseDown = true;
+
+				}
+			}
+			else
+			{
+				if (GameC::event.type == SDL_MOUSEBUTTONUP)
+				{
+					SDL_GetMouseState(&fx, &fy);
+
+					fx = (fx - (fx % 4)) + GameC::camera.x;
+					fy = (fy - (fy % 4)) + GameC::camera.y;
+
+					if (GameC::camera.x % 4 != 0)
+					{
+						fx = fx - 2;
+					}
+					if (GameC::camera.y % 4 != 0)
+					{
+						fy = fy - 2;
+					}
+
+					if ((fy - iy) < 0)
+					{
+						if ((fx - ix) < (iy - fy))
+						{
+							fx += (iy - fy) - (fx - ix);
+						}
+						else if ((fx - ix) > (iy - fy))
+						{
+							fy -= (fx - ix) - (iy - fy);
+						}
+					}
+					else
+					{
+						if ((fx - ix) < (fy - iy))
+						{
+							fx += (fy - iy) - (fx - ix);
+						}
+						else if ((fx - ix) > (fy - iy))
+						{
+							fy += (fx - ix) - (fy - iy);
+						}
+					}
+
+					destR.w = (fx - ix);
+					destR.h = abs((fy - iy));
+
+					printf("fx:%d fy:%d\n", fx, fy);
+					mouseDown = false;
+				}
+			}
+
+			if (mouseDown)
+			{
+				SDL_GetMouseState(&x, &y);
+
+				x = (x - (x % 4)) + GameC::camera.x;
+				y = (y - (y % 4)) + GameC::camera.y;
 
 				if (GameC::camera.x % 4 != 0)
 				{
-					fx = fx - 2;
+					x = x - 2;
 				}
 				if (GameC::camera.y % 4 != 0)
 				{
-					fy = fy - 2;
+					y = y - 2;
 				}
 
-				if ((fy - iy) < 0)
+
+				if ((y - iy) < 0)
 				{
-					if ((fx - ix) < (iy - fy))
+					if ((x - ix) < (iy - y))
 					{
-						fx += (iy - fy) - (fx - ix);
+						x += (iy - y) - (x - ix);
 					}
-					else if ((fx - ix) > (iy - fy))
+					else if ((x - ix) > (iy - y))
 					{
-						fy -= (fx - ix) - (iy - fy);
+						y -= (x - ix) - (iy - y);
 					}
 				}
 				else
 				{
-					if ((fx - ix) < (fy - iy))
+					if ((x - ix) < (y - iy))
 					{
-						fx += (fy - iy) - (fx - ix);
+						x += (y - iy) - (x - ix);
 					}
-					else if ((fx - ix) > (fy - iy))
+					else if ((x - ix) > (y - iy))
 					{
-						fy += (fx - ix) - (fy - iy);
+						y += (x - ix) - (y - iy);
 					}
 				}
-				
-				destR.w = (fx - ix);
-				destR.h = abs((fy - iy));
 
-				printf("fx:%d fy:%d\n", fx, fy);
-				mouseDown = false;
-			}
-		}
+				printf("x:%d y:%d\n", x, y);
 
-		if (mouseDown)
-		{
-			SDL_GetMouseState(&x, &y);
-
-			x = (x - (x % 4)) + GameC::camera.x;
-			y = (y - (y % 4)) + GameC::camera.y;
-
-			if (GameC::camera.x % 4 != 0)
-			{
-				x = x - 2;
-			}
-			if (GameC::camera.y % 4 != 0)
-			{
-				y = y - 2;
+				destR.w = (x - ix);
+				destR.h = abs((y - iy));
 			}
 
-			
-			if ((y - iy) < 0)
+			if (iy > y)
 			{
-				if ((x - ix) < (iy - y))
-				{
-					x += (iy - y) - (x - ix);
-				}
-				else if ((x - ix) > (iy - y))
-				{
-					y -= (x - ix) - (iy - y);
-				}
+				destR.y = y - GameC::camera.y;
 			}
 			else
 			{
-				if ((x - ix) < (y - iy))
-				{
-					x += (y - iy) - (x - ix);
-				}
-				else if ((x - ix) > (y - iy))
-				{
-					y += (x - ix) - (y - iy);
-				}
+				destR.y = iy - GameC::camera.y;
 			}
+			destR.x = ix - GameC::camera.x;
 
-			printf("x:%d y:%d\n", x, y);
 
-			destR.w = (x - ix);
-			destR.h = abs((y - iy));
-		}
-
-		if (iy > y)
-		{
-			destR.y = y - GameC::camera.y;
-		}
-		else
-		{
-			destR.y = iy - GameC::camera.y;
-		}
-		destR.x = ix - GameC::camera.x;
-		
-
-		if (!mouseDown && GameC::event.type == SDL_KEYDOWN && GameC::event.key.keysym.sym == SDLK_k && destR.w != NULL)
-		{
-			char direction;
-			if (fy > iy)
+			if (!mouseDown && GameC::event.type == SDL_KEYDOWN && GameC::event.key.keysym.sym == SDLK_k && destR.w != NULL)
 			{
-				direction = 'd';
-				fx -= 4;
-				fy -= 4;
-			}
-			else
-			{
-				direction = 'u';
-				iy -= 4;
-				fx -= 4;
-				fy -= 4;
-			}
-
-			auto& tcol(manager.addEntity());
-			tcol.addComponent<ColliderComponentTri>(direction, ix, iy, fx, fy, 4);
-			tcol.addGroup(GameC::groupTriColliders);
-
-			std::vector<int> temp;
-
-			temp.push_back(ix);
-			temp.push_back(iy);
-			temp.push_back(fx);
-			temp.push_back(fy);
-
-			triColVec.push_back(temp);
-
-			for (int j = 0; j < triColVec.size(); j++)
-			{
-				for (int i = 0; i < triColVec[j].size(); i++)
+				char direction;
+				if (fy > iy)
 				{
-					printf("%d\n", triColVec[j][i]);
+					direction = 'd';
+					fx -= 4;
+					fy -= 4;
 				}
-			}
+				else
+				{
+					direction = 'u';
+					iy -= 4;
+					fx -= 4;
+					fy -= 4;
+				}
 
-			printf("added\n");
+				auto& tcol(manager.addEntity());
+				tcol.addComponent<ColliderComponentTri>(direction, ix, iy, fx, fy, 4);
+				tcol.addGroup(GameC::groupTriColliders);
+
+				std::vector<int> temp;
+
+				temp.push_back(ix);
+				temp.push_back(iy);
+				temp.push_back(fx);
+				temp.push_back(fy);
+
+				triColVec.push_back(temp);
+
+				for (int j = 0; j < triColVec.size(); j++)
+				{
+					for (int i = 0; i < triColVec[j].size(); i++)
+					{
+						printf("%d\n", triColVec[j][i]);
+					}
+				}
+
+				printf("added\n");
+			}
 		}
 	}
 
