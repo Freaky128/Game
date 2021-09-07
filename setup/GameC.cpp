@@ -26,6 +26,7 @@ auto& Player(manager.addEntity());
 auto& mapTex(manager.addEntity());
 auto& NPC(manager.addEntity());
 auto& NPC2(manager.addEntity());
+auto& bear(manager.addEntity());
 
 //const char* mapfile = "assets/terrain_ss.png";
 
@@ -91,7 +92,7 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	Player.addComponent<ColliderComponent>("player");
 	Player.addGroup(groupPlayers);
 
-	NPC.addComponent<TransformComponent>((366 * SCALE),(410 * SCALE),12,14,12,14,SCALE); // magic numbers
+	NPC.addComponent<TransformComponent>((366 * SCALE), (410 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
 	NPC.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
 	NPC.addComponent<ColliderComponent>("NPC");
 	NPC.addComponent<NPCbehaviour>();
@@ -102,6 +103,12 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	NPC2.addComponent<ColliderComponent>("NPC");
 	NPC2.addComponent<NPCbehaviour>();
 	NPC2.addGroup(groupEnemies);
+
+	bear.addComponent<TransformComponent>((360 * SCALE), (410 * SCALE), 34, 22, 34, 22, SCALE); // magic numbers
+	bear.addComponent<SpriteComponent>("Assets/bear_v1.png", true, "bear");
+	bear.addComponent<ColliderComponent>("NPC");
+	bear.addComponent<NPCbehaviour>();
+	bear.addGroup(groupEnemies);
 
 	camera.x = (434 * SCALE) - 308; //magic numbers
 	camera.y = (400 * SCALE) - 274;

@@ -2,17 +2,22 @@
 
 struct Animation
 {
-	int index;
 	int frames;
 	int speed;
+	std::vector<SDL_Rect> framePos;
 
-	Animation(){}
+	Animation() {}
 
-	Animation(int i, int f, int s)
+	Animation(int f, int s, std::vector<SDL_Rect> rects)
 	{
-		index = i;
 		frames = f;
 		speed = s;
+		framePos.swap(rects);
+		/*printf("%d\n", framePos[0].y);
+		if (framePos.size() > 1)
+		{
+			printf("%d\n", framePos[1].y);
+		}*/
 	}
 
 };

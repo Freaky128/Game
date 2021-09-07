@@ -16,10 +16,9 @@ private:
 	bool animated = false;
 	int frames = 0;
 	int speed = 100;
+	const char* playing;
 
 public:
-
-	int animIndex = 0;
 
 	std::string tag;
 
@@ -39,22 +38,15 @@ public:
 
 		tag = t;
 
-		Animation idle = Animation(0, 1, 1);
-		Animation walkRight = Animation(1, 2, 125);
-		Animation walkLeft = Animation(2, 2, 125);
-		Animation walkDown = Animation(3, 2, 125);
-		Animation walkUp = Animation(4, 2, 125);
-		Animation idleUp = Animation(5, 1, 1);
-		Animation idleLR = Animation(6, 1, 1);
-
-		animations.emplace("Idle", idle);
-		animations.emplace("WalkRight", walkRight);
-		animations.emplace("WalkLeft", walkLeft);
-		animations.emplace("WalkDown", walkDown);
-		animations.emplace("WalkUp", walkUp);
-		animations.emplace("IdleUp", idleUp);
-		animations.emplace("IdleL/R", idleLR);
-
+		if (tag == "Player" || tag == "NPC")
+		{
+			playerAnimations();
+		}
+		else
+		{
+			bearAnimations();
+		}
+		
 		Play("Idle");
 
 		setTex(path);
@@ -87,10 +79,8 @@ public:
 	{
 		if (animated)
 		{
-			srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+			srcRect = animations[playing].framePos[static_cast<int>((SDL_GetTicks() / speed) % frames)];
 		}
-		
-		srcRect.y = animIndex * transform->height;
 
 		if (tag == "Player")
 		{
@@ -103,8 +93,8 @@ public:
 		{
 			destRect.x = (static_cast<int>(transform->position.x)) - GameC::camera.x;
 			destRect.y = (static_cast<int>(transform->position.y)) - GameC::camera.y;
-			destRect.w = transform->finalWidth * transform->scale;
-			destRect.h = transform->finalHeight * transform->scale;
+			destRect.w = srcRect.w * transform->scale;
+			destRect.h = srcRect.h * transform->scale;
 		}
 
 	}
@@ -117,8 +107,155 @@ public:
 	void Play(const char* animName)
 	{
 		frames = animations[animName].frames;
-		animIndex = animations[animName].index;
 		speed = animations[animName].speed;
+		playing = animName;
 	}
 
+	void playerAnimations()
+	{
+		SDL_Rect temp;
+		std::vector<SDL_Rect> rects;
+		int frames;
+		int speed = 125;
+
+		frames = 1;
+		temp = { 0,0,12,14 };
+		rects.push_back(temp);
+		Animation idle = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,14,12,14 };
+		rects.push_back(temp);
+
+		temp = { 12,14,12,14 };
+		rects.push_back(temp);
+		Animation walkRight = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,28,12,14 };
+		rects.push_back(temp);
+
+		temp = { 12,28,12,14 };
+		rects.push_back(temp);
+		Animation walkLeft = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,42,12,14 };
+		rects.push_back(temp);
+
+		temp = { 12,42,12,14 };
+		rects.push_back(temp);
+		Animation walkDown = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,56,12,14 };
+		rects.push_back(temp);
+
+		temp = { 12,56,12,14 };
+		rects.push_back(temp);
+		Animation walkUp = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 1;
+		temp = { 0,70,12,14 };
+		rects.push_back(temp);
+		Animation idleUp = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 1;
+		temp = { 0,84,12,14 };
+		rects.push_back(temp);
+		Animation idleLR = Animation(frames, speed, rects);
+
+		animations.emplace("Idle", idle);
+		animations.emplace("WalkRight", walkRight);
+		animations.emplace("WalkLeft", walkLeft);
+		animations.emplace("WalkDown", walkDown);
+		animations.emplace("WalkUp", walkUp);
+		animations.emplace("IdleUp", idleUp);
+		animations.emplace("IdleL/R", idleLR);
+
+		printf("%d\n", animations["Idle"].framePos[0].x);
+		printf("%d\n", animations["WalkRight"].framePos[0].x);
+		printf("%d\n", animations["WalkRight"].framePos[1].x);
+	}
+
+	void bearAnimations()
+	{
+		SDL_Rect temp;
+		std::vector<SDL_Rect> rects;
+		int frames;
+		int speed = 200;
+
+		frames = 1;
+		temp = { 0,0,34,22 };
+		rects.push_back(temp);
+		Animation idle = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,44,35,22 };
+		rects.push_back(temp);
+
+		temp = { 35,44,37,22 };
+		rects.push_back(temp);
+		Animation walkRight = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,22,37,22 };
+		rects.push_back(temp);
+
+		temp = { 37,22,35,22 };
+		rects.push_back(temp);
+		Animation walkLeft = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 1;
+		temp = { 0,22,37,22 };
+		rects.push_back(temp);
+		Animation walkDown = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 1;
+		temp = { 0,22,37,22 };
+		rects.push_back(temp);
+		Animation walkUp = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 1;
+		temp = { 0,22,37,22 };
+		rects.push_back(temp);
+		Animation idleUp = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 1;
+		temp = { 0,0,34,22 };
+		rects.push_back(temp);
+		Animation idleLR = Animation(frames, speed, rects);
+
+		animations.emplace("Idle", idle);
+		animations.emplace("WalkRight", walkRight);
+		animations.emplace("WalkLeft", walkLeft);
+		animations.emplace("WalkDown", walkDown);
+		animations.emplace("WalkUp", walkUp);
+		animations.emplace("IdleUp", idleUp);
+		animations.emplace("IdleL/R", idleLR);
+	}
 };
