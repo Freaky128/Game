@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "Collision.h"
 #include "LvlColliderEditor.h"
+#include "Spawner.h"
 
 #define SCALE 4
 
@@ -26,7 +27,6 @@ auto& Player(manager.addEntity());
 auto& mapTex(manager.addEntity());
 auto& NPC(manager.addEntity());
 auto& NPC2(manager.addEntity());
-auto& bear(manager.addEntity());
 
 //const char* mapfile = "assets/terrain_ss.png";
 
@@ -74,6 +74,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 		}
 	}
 
+	srand(time(NULL));
+
 	camera.w = width;
 	camera.h = height;
 
@@ -96,19 +98,13 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	NPC.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
 	NPC.addComponent<ColliderComponent>("NPC");
 	NPC.addComponent<NPCbehaviour>();
-	NPC.addGroup(groupEnemies);
+	NPC.addGroup(groupNPC);
 
 	NPC2.addComponent<TransformComponent>((360 * SCALE), (410 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
 	NPC2.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
 	NPC2.addComponent<ColliderComponent>("NPC");
 	NPC2.addComponent<NPCbehaviour>();
-	NPC2.addGroup(groupEnemies);
-
-	bear.addComponent<TransformComponent>((360 * SCALE), (410 * SCALE), 34, 22, 34, 22, SCALE); // magic numbers
-	bear.addComponent<SpriteComponent>("Assets/bear_v1.png", true, "bear");
-	bear.addComponent<ColliderComponent>("NPC");
-	bear.addComponent<NPCbehaviour>();
-	bear.addGroup(groupEnemies);
+	NPC2.addGroup(groupNPC);
 
 	camera.x = (434 * SCALE) - 308; //magic numbers
 	camera.y = (400 * SCALE) - 274;
@@ -126,6 +122,8 @@ auto& players(manager.getGroup(GameC::groupPlayers));
 auto& enemies(manager.getGroup(GameC::groupEnemies));
 auto& colliders(manager.getGroup(GameC::groupColliders));
 auto& triColliders(manager.getGroup(GameC::groupTriColliders));
+auto& NPCs(manager.getGroup(GameC::groupNPC));
+
 
 void GameC::events() {
 	
@@ -140,6 +138,8 @@ void GameC::events() {
 
 void GameC::update() {
 
+	Spawner::spawnBear();
+	
 	SDL_Rect playerCol = Player.getComponent<ColliderComponent>().collider;
 	SDL_Rect cameraPos = camera;
 	
@@ -155,7 +155,7 @@ void GameC::update() {
 	//manager.refresh();// might not need these could just update collider positions?
 	//manager.update();
 
-	for (auto& e : enemies)
+	for (auto& e : NPCs)
 	{
 		e->getComponent<ColliderComponent>().update();
 	}
@@ -193,7 +193,7 @@ void GameC::update() {
 		}
 	}
 
-	for (auto& e : enemies)
+	for (auto& e : NPCs)
 	{
 		SDL_Rect NPCcol = e->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(NPCcol, playerCol))
@@ -207,7 +207,7 @@ void GameC::update() {
 	manager.update();
 	manager.refresh();
 
-	for (auto& e : enemies)
+	for (auto& e : NPCs)
 	{
 		for (auto& c : colliders)
 		{
@@ -216,7 +216,7 @@ void GameC::update() {
 		}
 	}
 
-	for (auto& e : enemies)
+	for (auto& e : NPCs)
 	{
 		for (auto& t : triColliders)
 		{
@@ -227,12 +227,14 @@ void GameC::update() {
 		}
 	}
 
-	for (auto& e : enemies)
+	for (auto& e : NPCs)
 	{
 			e->getComponent<NPCbehaviour>().CollisionDetection(playerCol);		
 	}
 
 	LvlColliderEditor::update();
+
+	printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", camera.x, camera.y, camera.w, camera.h);
 
 	/*for (auto t : tiles)
 	{
@@ -246,6 +248,10 @@ void GameC::render() {
 	for (auto& m : mapStuff)
 	{
 		m->draw();
+	}
+	for (auto& n : NPCs)
+	{
+		n->draw();
 	}
 	for (auto& e : enemies)
 	{
@@ -270,15 +276,6 @@ void GameC::render() {
 }
 
 void GameC::clean() {
-	/*delete& Player;
-	delete& NPC;
-	delete& NPC2;
-	delete& NPC3;
-	for (auto& c : colliders) // throws exception i think
-	{
-		delete c;
-	}*/
-	
 	Player.destroy();
 	NPC.destroy();
 	NPC2.destroy();
@@ -291,6 +288,10 @@ void GameC::clean() {
 	for (auto& t : triColliders)
 	{
 		t->destroy();
+	}
+	for (auto& e : enemies)
+	{
+		e->destroy();
 	}
 
 	manager.refresh();

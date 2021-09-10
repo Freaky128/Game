@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <SDL_image.h>
 #include <vector>
+#include <time.h>
+
+#define SCALE 4
+
 
 class ColliderComponent;
 
@@ -34,6 +38,7 @@ public:
 		groupMap,
 		groupPlayers,
 		groupEnemies,
+		groupNPC,
 		groupColliders,
 		groupTriColliders
 	};

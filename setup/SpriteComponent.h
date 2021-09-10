@@ -11,7 +11,7 @@ class SpriteComponent : public Component
 private:
 	TransformComponent *transform;
 	SDL_Texture* texture;
-	SDL_Rect srcRect, destRect;
+	SDL_Rect srcRect;
 
 	bool animated = false;
 	int frames = 0;
@@ -19,6 +19,7 @@ private:
 	const char* playing;
 
 public:
+	SDL_Rect destRect;
 
 	std::string tag;
 
@@ -86,8 +87,8 @@ public:
 		{
 			destRect.x = static_cast<int>(transform->position.x);
 			destRect.y = static_cast<int>(transform->position.y);
-			destRect.w = transform->finalWidth * transform->scale;
-			destRect.h = transform->finalHeight * transform->scale;
+			destRect.w = srcRect.w * transform->scale;
+			destRect.h = srcRect.h * transform->scale;
 		}
 		else 
 		{
@@ -184,10 +185,6 @@ public:
 		animations.emplace("WalkUp", walkUp);
 		animations.emplace("IdleUp", idleUp);
 		animations.emplace("IdleL/R", idleLR);
-
-		printf("%d\n", animations["Idle"].framePos[0].x);
-		printf("%d\n", animations["WalkRight"].framePos[0].x);
-		printf("%d\n", animations["WalkRight"].framePos[1].x);
 	}
 
 	void bearAnimations()

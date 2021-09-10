@@ -1,6 +1,5 @@
 #pragma once
 
-#include <time.h>
 #include "Components.h"
 
 class NPCbehaviour : public Component
@@ -20,7 +19,6 @@ public:
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
 		NPCcollider = &entity->getComponent<ColliderComponent>();
-		srand(time(NULL));
 	}
 	
 	//void update() override;

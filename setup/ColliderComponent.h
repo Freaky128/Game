@@ -15,6 +15,7 @@ public:
 	SDL_Rect srcR, destR;
 
 	TransformComponent* transform;
+	SpriteComponent* sprite;
 
 	int Ixpos;
 	int Iypos;
@@ -43,8 +44,9 @@ public:
 		}
 
 		transform = &entity->getComponent<TransformComponent>();
+		sprite = &entity->getComponent<SpriteComponent>();
 
-		tex = TextureManager::LoadTexture("assets/collider.png");
+		//tex = TextureManager::LoadTexture("assets/collider.png");
 		srcR = { 0, 0, 32, 32 };
 		destR = { collider.x, collider.y, collider.w, collider.h };
 
@@ -55,10 +57,10 @@ public:
 	{
 		if (tag == "player")
 		{
-			collider.x = static_cast<int>(transform->position.x);
+			collider.x = static_cast<int>(transform->position.x + transform->scale);
 			collider.y = static_cast<int>(transform->position.y);
-			collider.w = transform->finalWidth * transform->scale;
-			collider.h = transform->finalHeight * transform->scale;
+			collider.w = sprite->destRect.w - (transform->scale * 2); // should maybe use srcRect
+			collider.h = sprite->destRect.h;
 			destR = { collider.x, collider.y, collider.w, collider.h };
 		}
 		else if(tag == "terrain")
@@ -72,8 +74,8 @@ public:
 		{
 			collider.x = transform->position.x - GameC::camera.x;
 			collider.y = transform->position.y - GameC::camera.y;
-			collider.w = transform->finalWidth * transform->scale;
-			collider.h = (transform->finalHeight / 2) * transform->scale;
+			collider.w = sprite->destRect.w;
+			collider.h = sprite->destRect.h / 2;
 			destR = { collider.x, collider.y, collider.w, collider.h };
 		}
 	}
