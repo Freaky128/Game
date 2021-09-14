@@ -10,3 +10,4 @@
 #include "MapComponent.h"
 #include "NPCbehaviour.h"
 #include "ColliderComponentTri.h"
+#include "AnimalBehaviour.h"

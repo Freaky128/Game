@@ -234,7 +234,7 @@ void GameC::update() {
 
 	LvlColliderEditor::update();
 
-	printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", camera.x, camera.y, camera.w, camera.h);
+	//printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", camera.x, camera.y, camera.w, camera.h);
 
 	/*for (auto t : tiles)
 	{

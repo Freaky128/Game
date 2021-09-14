@@ -21,8 +21,6 @@ public:
 		NPCcollider = &entity->getComponent<ColliderComponent>();
 	}
 	
-	//void update() override;
-
 	Vector2D NPCIpos;
 	
 	void update() override;
