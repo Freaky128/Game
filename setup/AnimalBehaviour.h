@@ -10,7 +10,7 @@ private:
 	SpriteComponent* sprite;
 	ColliderComponent* Acollider;
 
-	SDL_Rect posRectC;
+	SDL_Rect destRect;
 
 	int Xdif, Ydif;
 	bool walkX;

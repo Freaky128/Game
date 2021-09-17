@@ -3,20 +3,20 @@
 void AnimalBehaviour::update()
 {
 	animalPos = transform->position;
-	posRectC = sprite->destRect;
+	destRect = sprite->destRect;
 
-	posRectC.x += GameC::camera.x;
-	posRectC.y += GameC::camera.y;
+	destRect.x += GameC::camera.x;
+	destRect.y += GameC::camera.y;
 
 	//printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", GameC::camera.x, GameC::camera.y, GameC::camera.w, GameC::camera.h);
-	//printf("bear c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", posRectC.x, posRectC.y, posRectC.w, posRectC.h);
+	//printf("bear c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", destRect.x, destRect.y, destRect.w, destRect.h);
 	
-	if (Collision::AABB(posRectC, GameC::camera))
+	if (Collision::AABB(destRect, GameC::camera))
 	{
-		printf("xpos: %f ypos: %f\n", transform->position.x, transform->position.y);
+		printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y);
 		
-		Xdif = 320 - (static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2));
-		Ydif = 288 - (static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2));
+		Xdif = 320 - (static_cast<int>(animalPos.x) - GameC::camera.x + (destRect.w / 2));
+		Ydif = 288 - (static_cast<int>(animalPos.y) - GameC::camera.y + (destRect.h / 2));
 		printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
 
 		if(!assigned)
@@ -33,11 +33,18 @@ void AnimalBehaviour::update()
 			assigned = true;
 		}
 		
-		
+		if (walkX)
+		{
+			printf("walkX: true\n");
+		}
+		else
+		{
+			printf("walkX: false\n");
+		}
 		
 		if (walkX)
 		{
-			if((static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) < 160 || (static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) > 480)
+			if(abs(Xdif) > 160)
 			{
 				if (Xdif > 0)
 				{
@@ -48,7 +55,7 @@ void AnimalBehaviour::update()
 					transform->position.x -= 3;
 				}
 			}
-			else if((static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) < 144 || (static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) > 432)
+			else if(abs(Ydif) > 144)
 			{
 				assigned = false;
 				
@@ -61,7 +68,7 @@ void AnimalBehaviour::update()
 					transform->position.y -= 3;
 				}
 			}
-			else if ((static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) < 319 || (static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) > 321)
+			else if (abs(Xdif) > 1)
 			{
 				if (Xdif > 0)
 				{
@@ -72,7 +79,7 @@ void AnimalBehaviour::update()
 					transform->position.x -= 3;
 				}
 			}
-			else if ((static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) < 287 || (static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) > 289)
+			else if (abs(Ydif) > 1)
 			{
 				if (Ydif > 0)
 				{
@@ -86,7 +93,7 @@ void AnimalBehaviour::update()
 		}
 		else
 		{
-			if ((static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) < 144 || (static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) > 432)
+			if (abs(Ydif) > 144)
 			{
 				if (Ydif > 0)
 				{
@@ -97,7 +104,7 @@ void AnimalBehaviour::update()
 					transform->position.y -= 3;
 				}
 			}
-			else if ((static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) < 160 || (static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) > 480)
+			else if (abs(Xdif) > 160)
 			{
 				assigned = false;
 				
@@ -110,7 +117,7 @@ void AnimalBehaviour::update()
 					transform->position.x -= 3;
 				}
 			}
-			else if ((static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) < 287 || (static_cast<int>(transform->position.y) - GameC::camera.y + (sprite->destRect.h / 2)) > 289)
+			else if (abs(Ydif) > 1)
 			{
 				if (Ydif > 0)
 				{
@@ -121,7 +128,7 @@ void AnimalBehaviour::update()
 					transform->position.y -= 3;
 				}
 			}
-			else if ((static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) < 319 || (static_cast<int>(transform->position.x) - GameC::camera.x + (sprite->destRect.w / 2)) > 321)
+			else if (abs(Xdif) > 1)
 			{
 				if (Xdif > 0)
 				{
