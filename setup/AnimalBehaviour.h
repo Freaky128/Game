@@ -13,8 +13,12 @@ private:
 	SDL_Rect destRect;
 
 	int Xdif, Ydif;
-	bool walkX;
-	bool assigned;
+	bool firstLoop = true;
+	bool x1 = false;
+	bool y1 = false;
+	bool x2 = false;
+	bool y2 = false;
+	int state = 0;
 
 public:
 	Vector2D animalPos;

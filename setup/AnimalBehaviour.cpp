@@ -14,37 +14,28 @@ void AnimalBehaviour::update()
 	if (Collision::AABB(destRect, GameC::camera))
 	{
 		printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y);
-		
+
 		Xdif = 320 - (static_cast<int>(animalPos.x) - GameC::camera.x + (destRect.w / 2));
 		Ydif = 288 - (static_cast<int>(animalPos.y) - GameC::camera.y + (destRect.h / 2));
 		printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
 
-		if(!assigned)
+		if (firstLoop)
 		{
 			if (abs(Xdif) > abs(Ydif))
 			{
-				walkX = true;
+				state = 1;
 			}
 			else
 			{
-				walkX = false;
+				state = 2;
 			}
 
-			assigned = true;
+			firstLoop = false;
 		}
-		
-		if (walkX)
+
+		if (state == 1 && !x1)
 		{
-			printf("walkX: true\n");
-		}
-		else
-		{
-			printf("walkX: false\n");
-		}
-		
-		if (walkX)
-		{
-			if(abs(Xdif) > 160)
+			if (abs(Xdif) > 160)
 			{
 				if (Xdif > 0)
 				{
@@ -55,46 +46,22 @@ void AnimalBehaviour::update()
 					transform->position.x -= 3;
 				}
 			}
-			else if(abs(Ydif) > 144)
-			{
-				assigned = false;
-				
-				if (Ydif > 0)
-				{
-					transform->position.y += 3;
-				}
-				else
-				{
-					transform->position.y -= 3;
-				}
-			}
-			else if (abs(Xdif) > 1)
-			{
-				if (Xdif > 0)
-				{
-					transform->position.x += 3;
-				}
-				else
-				{
-					transform->position.x -= 3;
-				}
-			}
-			else if (abs(Ydif) > 1)
-			{
-				if (Ydif > 0)
-				{
-					transform->position.y += 3;
-				}
-				else
-				{
-					transform->position.y -= 3;
-				}
-			}
+		}
+
+		if ((abs(Xdif) - 3) <= 160)
+		{
+			x1 = true;
 		}
 		else
+		{
+			x1 = false;
+		}
+
+		if (state == 2 && !y1)
 		{
 			if (abs(Ydif) > 144)
 			{
+
 				if (Ydif > 0)
 				{
 					transform->position.y += 3;
@@ -104,31 +71,20 @@ void AnimalBehaviour::update()
 					transform->position.y -= 3;
 				}
 			}
-			else if (abs(Xdif) > 160)
-			{
-				assigned = false;
-				
-				if (Xdif > 0)
-				{
-					transform->position.x += 3;
-				}
-				else
-				{
-					transform->position.x -= 3;
-				}
-			}
-			else if (abs(Ydif) > 1)
-			{
-				if (Ydif > 0)
-				{
-					transform->position.y += 3;
-				}
-				else
-				{
-					transform->position.y -= 3;
-				}
-			}
-			else if (abs(Xdif) > 1)
+		}
+
+		if ((abs(Ydif) - 3) <= 144)
+		{
+			y1 = true;
+		}
+		else
+		{
+			y1 = false;
+		}
+
+		if (state == 3 && !x2)
+		{
+			if (abs(Xdif) > 1)
 			{
 				if (Xdif > 0)
 				{
@@ -140,10 +96,89 @@ void AnimalBehaviour::update()
 				}
 			}
 		}
-		
+
+		if ((abs(Xdif) - 3) <= 1)
+		{
+			x2 = true;
+		}
+		else
+		{
+			x2 = false;
+		}
+
+		if (state == 4 && !y2)
+		{
+			if (abs(Ydif) > 1)
+			{
+				if (Ydif > 0)
+				{
+					transform->position.y += 3;
+				}
+				else
+				{
+					transform->position.y -= 3;
+				}
+			}
+		}
+
+		if ((abs(Ydif) - 3) <= 1)
+		{
+			y2 = true;
+		}
+		else
+		{
+			y2 = false;
+		}
+
+		printf("state: %d\n", state);
+
+		if (state == 1 && x1)
+		{
+			if (!y1)
+			{
+				state = 2;
+			}
+			else
+			{
+				state = 4;
+			}
+		}
+		else if(state == 2 && y1)
+		{
+			if (!x1)
+			{
+				state = 1;
+			}
+			else
+			{
+				state = 3;
+			}
+		}
+		else if (state == 3 && x2)
+		{
+			if (!y1)
+			{
+				state = 2;
+			}
+			else
+			{
+				state = 4;
+			}
+		}
+		else if (state == 4 && y2)
+		{
+			if (!x1)
+			{
+				state = 1;
+			}
+			else
+			{
+				state = 3;
+			}
+		}
 	}
 	else
 	{
-		assigned = false;
+		firstLoop = true;
 	}
 }
