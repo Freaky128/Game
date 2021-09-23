@@ -15,9 +15,10 @@ void AnimalBehaviour::update()
 	{
 		printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y);
 
-		Xdif = 320 - (static_cast<int>(animalPos.x) - GameC::camera.x + (destRect.w / 2));
-		Ydif = 288 - (static_cast<int>(animalPos.y) - GameC::camera.y + (destRect.h / 2));
+		Xdif = 320 - (static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE)); //magic numbers
+		Ydif = 288 - (static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE));
 		printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
+		printf("destRect.w / 2: %d\n", (destRect.w / 2));
 
 		if (firstLoop)
 		{
@@ -40,10 +41,12 @@ void AnimalBehaviour::update()
 				if (Xdif > 0)
 				{
 					transform->position.x += 3;
+					sprite->Play("WalkRight");
 				}
 				else
 				{
 					transform->position.x -= 3;
+					sprite->Play("WalkLeft");
 				}
 			}
 		}
@@ -65,10 +68,12 @@ void AnimalBehaviour::update()
 				if (Ydif > 0)
 				{
 					transform->position.y += 3;
+					sprite->Play("WalkDown");
 				}
 				else
 				{
 					transform->position.y -= 3;
+					sprite->Play("WalkUp");
 				}
 			}
 		}
@@ -89,10 +94,12 @@ void AnimalBehaviour::update()
 				if (Xdif > 0)
 				{
 					transform->position.x += 3;
+					sprite->Play("WalkRight");
 				}
 				else
 				{
 					transform->position.x -= 3;
+					sprite->Play("WalkLeft");
 				}
 			}
 		}
@@ -113,10 +120,12 @@ void AnimalBehaviour::update()
 				if (Ydif > 0)
 				{
 					transform->position.y += 3;
+					sprite->Play("WalkDown");
 				}
 				else
 				{
 					transform->position.y -= 3;
+					sprite->Play("WalkUp");
 				}
 			}
 		}
@@ -180,5 +189,34 @@ void AnimalBehaviour::update()
 	else
 	{
 		firstLoop = true;
+	}
+}
+
+void AnimalBehaviour::castLine(int x0, int y0, int x1, int y1)
+{
+	int dx, dy, p, x, y;
+
+	dx = x1 - x0;
+	dy = y1 - y0;
+
+	x = x0;
+	y = y0;
+
+	p = 2 * dy - dx;
+
+	while (x < x1)
+	{
+		if (p >= 0)
+		{
+			//putpixel(x, y, 7);
+			y = y + 1;
+			p = p + 2 * dy - 2 * dx;
+		}
+		else
+		{
+			//putpixel(x, y, 7);
+			p = p + 2 * dy;
+		}
+		x = x + 1;
 	}
 }

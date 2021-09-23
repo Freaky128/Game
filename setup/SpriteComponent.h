@@ -195,57 +195,70 @@ public:
 		int speed = 200;
 
 		frames = 1;
-		temp = { 0,0,34,22 };
+		temp = { 0,0,20,27 };
 		rects.push_back(temp);
 		Animation idle = Animation(frames, speed, rects);
 
 		rects.clear();
 
 		frames = 2;
-		temp = { 0,44,35,22 };
+		temp = { 0,27,20,27 };
 		rects.push_back(temp);
 
-		temp = { 35,44,37,22 };
-		rects.push_back(temp);
-		Animation walkRight = Animation(frames, speed, rects);
-
-		rects.clear();
-
-		frames = 2;
-		temp = { 0,22,37,22 };
-		rects.push_back(temp);
-
-		temp = { 37,22,35,22 };
-		rects.push_back(temp);
-		Animation walkLeft = Animation(frames, speed, rects);
-
-		rects.clear();
-
-		frames = 1;
-		temp = { 0,22,37,22 };
+		temp = { 20,27,20,27 };
 		rects.push_back(temp);
 		Animation walkDown = Animation(frames, speed, rects);
 
 		rects.clear();
 
 		frames = 1;
-		temp = { 0,22,37,22 };
+		temp = { 0,54,20,27 };
+		rects.push_back(temp);
+		Animation idleUp = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,81,20,27 };
+		rects.push_back(temp);
+
+		temp = { 20,81,20,27 };
 		rects.push_back(temp);
 		Animation walkUp = Animation(frames, speed, rects);
 
 		rects.clear();
 
 		frames = 1;
-		temp = { 0,22,37,22 };
+		temp = { 0,108,34,22 };
 		rects.push_back(temp);
-		Animation idleUp = Animation(frames, speed, rects);
+		Animation  idleLeft = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,130,35,22 };
+		rects.push_back(temp);
+
+		temp = { 35,130,35,22 };
+		rects.push_back(temp);
+		Animation walkLeft = Animation(frames, speed, rects);
 
 		rects.clear();
 
 		frames = 1;
-		temp = { 0,0,34,22 };
+		temp = { 0,152,34,22 };
 		rects.push_back(temp);
-		Animation idleLR = Animation(frames, speed, rects);
+		Animation idleRight = Animation(frames, speed, rects);
+
+		rects.clear();
+
+		frames = 2;
+		temp = { 0,174,37,22 };
+		rects.push_back(temp);
+
+		temp = { 37,174,35,22 };
+		rects.push_back(temp);
+		Animation walkRight = Animation(frames, speed, rects);
 
 		animations.emplace("Idle", idle);
 		animations.emplace("WalkRight", walkRight);
@@ -253,6 +266,7 @@ public:
 		animations.emplace("WalkDown", walkDown);
 		animations.emplace("WalkUp", walkUp);
 		animations.emplace("IdleUp", idleUp);
-		animations.emplace("IdleL/R", idleLR);
+		animations.emplace("IdleRight", idleRight);
+		animations.emplace("IdleLeft", idleLeft);
 	}
 };

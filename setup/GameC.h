@@ -7,7 +7,8 @@
 #include <time.h>
 
 #define SCALE 4
-
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 576
 
 class ColliderComponent;
 

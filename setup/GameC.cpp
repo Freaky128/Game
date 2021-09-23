@@ -94,20 +94,20 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	Player.addComponent<ColliderComponent>("player");
 	Player.addGroup(groupPlayers);
 
-	NPC.addComponent<TransformComponent>((366 * SCALE), (410 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
+	NPC.addComponent<TransformComponent>((368 * SCALE), (412 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
 	NPC.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
 	NPC.addComponent<ColliderComponent>("NPC");
 	NPC.addComponent<NPCbehaviour>();
 	NPC.addGroup(groupNPC);
 
-	NPC2.addComponent<TransformComponent>((360 * SCALE), (410 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
+	NPC2.addComponent<TransformComponent>((360 * SCALE), (412 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
 	NPC2.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
 	NPC2.addComponent<ColliderComponent>("NPC");
 	NPC2.addComponent<NPCbehaviour>();
 	NPC2.addGroup(groupNPC);
 
-	camera.x = (434 * SCALE) - 308; //magic numbers
-	camera.y = (400 * SCALE) - 274;
+	camera.x = (434 * SCALE) - ((WINDOW_WIDTH / 2) - 24); //magic numbers
+	camera.y = (400 * SCALE) - ((WINDOW_HEIGHT / 2) - 28);
 
 	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 20, 300, 1);
 	//wall.addComponent<SpriteComponent>("assets/collider.png");

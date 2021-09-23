@@ -2,6 +2,7 @@
 
 #include "Components.h"
 #include "Vector2D.h"
+#include "GameC.h"
 
 class TransformComponent : public Component
 {
@@ -61,9 +62,9 @@ public:
 
 	TransformComponent(int iw, int ih, int fw, int fh, int sc)
 	{
-		position.x = 308; // magic numbers
+		position.x = (WINDOW_WIDTH / 2) - 24; // magic numbers
 		//std::cout << position.x << std::endl;
-		position.y = 274;
+		position.y = (WINDOW_HEIGHT / 2) - 28;
 		//std::cout << position.y << std::endl;
 		height = ih;
 		//std::cout << height << std::endl;
