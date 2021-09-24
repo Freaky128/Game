@@ -13,176 +13,198 @@ void AnimalBehaviour::update()
 	
 	if (Collision::AABB(destRect, GameC::camera))
 	{
-		printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y);
-
-		Xdif = 320 - (static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE)); //magic numbers
-		Ydif = 288 - (static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE));
-		printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
-		printf("destRect.w / 2: %d\n", (destRect.w / 2));
-
-		if (firstLoop)
+		if (!castLine(static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE), 320, 316) || !castLine(static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE), 320, 260))
 		{
-			if (abs(Xdif) > abs(Ydif))
-			{
-				state = 1;
-			}
-			else
-			{
-				state = 2;
-			}
+			//printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y);
 
-			firstLoop = false;
-		}
+			Xdif = 320 - (static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE)); //magic numbers
+			Ydif = 288 - (static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE));
+			//printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
+			//printf("destRect.w / 2: %d\n", (destRect.w / 2));
 
-		if (state == 1 && !x1)
-		{
-			if (abs(Xdif) > 160)
+			if (firstLoop)
 			{
-				if (Xdif > 0)
+				if (abs(Xdif) > abs(Ydif))
 				{
-					transform->position.x += 3;
-					sprite->Play("WalkRight");
+					state = 1;
 				}
 				else
 				{
-					transform->position.x -= 3;
-					sprite->Play("WalkLeft");
+					state = 2;
+				}
+
+				firstLoop = false;
+			}
+
+			if (state == 1 && !x1)
+			{
+				if (abs(Xdif) > 160)
+				{
+					if (Xdif > 0)
+					{
+						transform->position.x += 3;
+						sprite->Play("WalkRight");
+					}
+					else
+					{
+						transform->position.x -= 3;
+						sprite->Play("WalkLeft");
+					}
 				}
 			}
-		}
 
-		if ((abs(Xdif) - 3) <= 160)
-		{
-			x1 = true;
-		}
-		else
-		{
-			x1 = false;
-		}
-
-		if (state == 2 && !y1)
-		{
-			if (abs(Ydif) > 144)
+			if ((abs(Xdif) - 3) <= 160)
 			{
+				x1 = true;
+			}
+			else
+			{
+				x1 = false;
+			}
 
-				if (Ydif > 0)
+			if (state == 2 && !y1)
+			{
+				if (abs(Ydif) > 144)
 				{
-					transform->position.y += 3;
-					sprite->Play("WalkDown");
+
+					if (Ydif > 0)
+					{
+						transform->position.y += 3;
+						sprite->Play("WalkDown");
+					}
+					else
+					{
+						transform->position.y -= 3;
+						sprite->Play("WalkUp");
+					}
+				}
+			}
+
+			if ((abs(Ydif) - 3) <= 144)
+			{
+				y1 = true;
+			}
+			else
+			{
+				y1 = false;
+			}
+
+			if (state == 3 && !x2)
+			{
+				if (abs(Xdif) > 1)
+				{
+					if (Xdif > 0)
+					{
+						transform->position.x += 3;
+						sprite->Play("WalkRight");
+					}
+					else
+					{
+						transform->position.x -= 3;
+						sprite->Play("WalkLeft");
+					}
+				}
+			}
+
+			if ((abs(Xdif) - 3) <= 1)
+			{
+				x2 = true;
+			}
+			else
+			{
+				x2 = false;
+			}
+
+			if (state == 4 && !y2)
+			{
+				if (abs(Ydif) > 1)
+				{
+					if (Ydif > 0)
+					{
+						transform->position.y += 3;
+						sprite->Play("WalkDown");
+					}
+					else
+					{
+						transform->position.y -= 3;
+						sprite->Play("WalkUp");
+					}
+				}
+			}
+
+			if ((abs(Ydif) - 3) <= 1)
+			{
+				y2 = true;
+			}
+			else
+			{
+				y2 = false;
+			}
+
+			//printf("state: %d\n", state);
+
+			if (state == 1 && x1)
+			{
+				if (!y1)
+				{
+					state = 2;
 				}
 				else
 				{
-					transform->position.y -= 3;
-					sprite->Play("WalkUp");
+					state = 4;
 				}
 			}
-		}
-
-		if ((abs(Ydif) - 3) <= 144)
-		{
-			y1 = true;
-		}
-		else
-		{
-			y1 = false;
-		}
-
-		if (state == 3 && !x2)
-		{
-			if (abs(Xdif) > 1)
+			else if (state == 2 && y1)
 			{
-				if (Xdif > 0)
+				if (!x1)
 				{
-					transform->position.x += 3;
-					sprite->Play("WalkRight");
+					state = 1;
 				}
 				else
 				{
-					transform->position.x -= 3;
-					sprite->Play("WalkLeft");
+					state = 3;
 				}
 			}
-		}
-
-		if ((abs(Xdif) - 3) <= 1)
-		{
-			x2 = true;
-		}
-		else
-		{
-			x2 = false;
-		}
-
-		if (state == 4 && !y2)
-		{
-			if (abs(Ydif) > 1)
+			else if (state == 3 && x2)
 			{
-				if (Ydif > 0)
+				if (!y1)
 				{
-					transform->position.y += 3;
-					sprite->Play("WalkDown");
+					state = 2;
 				}
 				else
 				{
-					transform->position.y -= 3;
-					sprite->Play("WalkUp");
+					state = 4;
+				}
+			}
+			else if (state == 4 && y2)
+			{
+				if (!x1)
+				{
+					state = 1;
+				}
+				else
+				{
+					state = 3;
 				}
 			}
 		}
-
-		if ((abs(Ydif) - 3) <= 1)
-		{
-			y2 = true;
-		}
 		else
 		{
-			y2 = false;
-		}
-
-		printf("state: %d\n", state);
-
-		if (state == 1 && x1)
-		{
-			if (!y1)
+			if (sprite->playing == "WalkRight")
 			{
-				state = 2;
+				sprite->Play("IdleRight");
 			}
-			else
+			else if(sprite->playing == "WalkLeft")
 			{
-				state = 4;
+				sprite->Play("IdleLeft");
 			}
-		}
-		else if(state == 2 && y1)
-		{
-			if (!x1)
+			else if (sprite->playing == "WalkDown")
 			{
-				state = 1;
+				sprite->Play("Idle");
 			}
-			else
+			else if (sprite->playing == "WalkUp")
 			{
-				state = 3;
-			}
-		}
-		else if (state == 3 && x2)
-		{
-			if (!y1)
-			{
-				state = 2;
-			}
-			else
-			{
-				state = 4;
-			}
-		}
-		else if (state == 4 && y2)
-		{
-			if (!x1)
-			{
-				state = 1;
-			}
-			else
-			{
-				state = 3;
+				sprite->Play("IdleUp");
 			}
 		}
 	}
@@ -192,31 +214,60 @@ void AnimalBehaviour::update()
 	}
 }
 
-void AnimalBehaviour::castLine(int x0, int y0, int x1, int y1)
-{
-	int dx, dy, p, x, y;
-
-	dx = x1 - x0;
-	dy = y1 - y0;
-
-	x = x0;
-	y = y0;
-
-	p = 2 * dy - dx;
-
-	while (x < x1)
+bool AnimalBehaviour::castLine(int x1, int y1, int x2, int y2)
+{	
+	// Bresenham's line algorithm
+	const bool steep = (abs(y2 - y1) > abs(x2 - x1));
+	if (steep)
 	{
-		if (p >= 0)
+		std::swap(x1, y1);
+		std::swap(x2, y2);
+	}
+
+	if (x1 > x2)
+	{
+		std::swap(x1, x2);
+		std::swap(y1, y2);
+	}
+
+	const int dx = x2 - x1;
+	const int dy = abs(y2 - y1);
+
+	int error = dx / 2.0f;
+	const int ystep = (y1 < y2) ? 1 : -1;
+	int y = (int)y1;
+
+	const int maxX = (int)x2;
+
+	for (int x = (int)x1; x <= maxX; x++)
+	{
+		if (steep)
 		{
-			//putpixel(x, y, 7);
-			y = y + 1;
-			p = p + 2 * dy - 2 * dx;
+			LdestRect.x = y;
+			LdestRect.y = x;
+			if (GameC::rayCol(LdestRect))
+			{
+				return true;
+			}
+			//SetPixel(y, x, color);
 		}
 		else
 		{
-			//putpixel(x, y, 7);
-			p = p + 2 * dy;
+			LdestRect.x = x;
+			LdestRect.y = y;
+			if (GameC::rayCol(LdestRect))
+			{
+				return true;
+			}
+			//SetPixel(x, y, color);
 		}
-		x = x + 1;
+
+		error -= dy;
+		if (error < 0)
+		{
+			y += ystep;
+			error += dx;
+		}
 	}
+	return false;
 }

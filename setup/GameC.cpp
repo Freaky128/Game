@@ -271,6 +271,11 @@ void GameC::render() {
 	}
 
 	LvlColliderEditor::draw();
+	for (auto& e : enemies)
+	{
+		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + (11 * SCALE), 320, 316);
+		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + (11 * SCALE), 320, 260);
+	}
 
 	SDL_RenderPresent(renderer);
 }
@@ -338,4 +343,31 @@ SDL_Point GameC::mouseColTri(const SDL_Rect& mRect)
 			return sp;
 		}
 	}
+}
+
+bool GameC::rayCol(const SDL_Rect& rRect)
+{
+	for (auto& t : triColliders)
+	{
+		SDL_Point tSP = t->getComponent<ColliderComponentTri>().startP;
+		SDL_Point tFP = t->getComponent<ColliderComponentTri>().finalP;
+		char dir = t->getComponent<ColliderComponentTri>().direction;
+		if (Collision::AARL(rRect, tSP, tFP, dir))
+		{
+			printf("ray hit\n");
+			return true;
+		}
+	}
+
+	for (auto& c : colliders)
+	{
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCol, rRect))
+		{
+			printf("ray hit\n");
+			return true;
+		}
+	}
+
+	return false;
 }

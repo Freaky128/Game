@@ -16,9 +16,11 @@ private:
 	bool animated = false;
 	int frames = 0;
 	int speed = 100;
-	const char* playing;
+	
 
 public:
+	const char* playing;
+	
 	SDL_Rect destRect;
 
 	std::string tag;

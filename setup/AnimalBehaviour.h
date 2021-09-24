@@ -9,8 +9,9 @@ private:
 	TransformComponent* transform;
 	SpriteComponent* sprite;
 	ColliderComponent* Acollider;
+	SDL_Texture* texture;
 
-	SDL_Rect destRect;
+	SDL_Rect destRect, LsrcRect, LdestRect;
 
 	int Xdif, Ydif;
 	bool firstLoop = true;
@@ -28,9 +29,13 @@ public:
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
 		Acollider = &entity->getComponent<ColliderComponent>();
+
+		texture = TextureManager::LoadTexture("assets/collider.png");
+		LsrcRect = { 0,0,32,32 };
+		LdestRect = { 0,0,1,1 };
 	}
 
 	void update() override;
 
-	void castLine(int x0, int y0, int x1, int y1);
+	bool castLine(int x1, int y1, int x2, int y2);
 };
