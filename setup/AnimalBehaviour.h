@@ -20,9 +20,13 @@ private:
 	bool x2 = false;
 	bool y2 = false;
 	int state = 0;
+	
 
 public:
 	Vector2D animalPos;
+	SDL_Point eyeOffset = { 0,0 };
+	SDL_Point line1 = { 320,288 };
+	SDL_Point line2 = { 320,288 };
 
 	void init() override
 	{

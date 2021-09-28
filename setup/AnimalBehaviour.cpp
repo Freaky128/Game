@@ -13,7 +13,91 @@ void AnimalBehaviour::update()
 	
 	if (Collision::AABB(destRect, GameC::camera))
 	{
-		if (!castLine(static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE), 320, 316) || !castLine(static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE), 320, 260))
+		if (sprite->playing == "Idle")
+		{
+			eyeOffset.x = (10 * SCALE);
+			eyeOffset.y = (16 * SCALE);
+		}
+		else if (sprite->playing == "IdleRight")
+		{
+			eyeOffset.x = (29 * SCALE);
+			eyeOffset.y = (9 * SCALE);
+		}
+		else if (sprite->playing == "IdleLeft")
+		{
+			eyeOffset.x = (6 * SCALE);
+			eyeOffset.y = (9 * SCALE);
+		}
+		else if (sprite->playing == "IdleUp")
+		{
+			eyeOffset.x = (10 * SCALE);
+			eyeOffset.y = (4 * SCALE);
+		}
+		else if (sprite->playing == "WalkDown")
+		{
+			eyeOffset.x = (10 * SCALE);
+			eyeOffset.y = (16 * SCALE);
+		}
+		else if (sprite->playing == "WalkRight")
+		{
+			eyeOffset.x = (30 * SCALE);
+			eyeOffset.y = (9 * SCALE);
+		}
+		else if (sprite->playing == "WalkLeft")
+		{
+			eyeOffset.x = (7 * SCALE);
+			eyeOffset.y = (10 * SCALE);
+		}
+		else if (sprite->playing == "WalkUp")
+		{
+			eyeOffset.x = (10 * SCALE);
+			eyeOffset.y = (4 * SCALE);
+		}
+
+		if ( (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x < 296 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y < 260) || (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x > 344 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y > 316) )
+		{
+			line1.x = 340;
+			line1.y = 260;
+			line2.x = 300;
+			line2.y = 316;
+		}
+		else if ((static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x < 296 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y > 316) || (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x > 344 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y < 260))
+		{
+			line1.x = 300;
+			line1.y = 260;
+			line2.x = 340;
+			line2.y = 316;
+		}
+		else if (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x >= 296 && static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x <= 344 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y < 288)
+		{
+			line1.x = 300;
+			line1.y = 260;
+			line2.x = 340;
+			line2.y = 260;
+		}
+		else if (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x >= 296 && static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x <= 344 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y > 288)
+		{
+			line1.x = 300;
+			line1.y = 316;
+			line2.x = 340;
+			line2.y = 316;
+		}
+		else if (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x < 320 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y >= 260 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y <= 316)
+		{
+			line1.x = 300;
+			line1.y = 260;
+			line2.x = 300;
+			line2.y = 316;
+		}
+		else if (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x > 320 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y >= 260 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y <= 316)
+		{
+			line1.x = 340;
+			line1.y = 260;
+			line2.x = 340;
+			line2.y = 316;
+		}
+
+		if (!castLine(static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x, static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y, line1.x, line1.y) || !castLine(static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x, static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y, line2.x, line2.y))
 		{
 			//printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y);
 

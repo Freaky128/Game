@@ -271,10 +271,11 @@ void GameC::render() {
 	}
 
 	LvlColliderEditor::draw();
+
 	for (auto& e : enemies)
 	{
-		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + (11 * SCALE), 320, 316);
-		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + (10 * SCALE), static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + (11 * SCALE), 320, 260);
+		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + e->getComponent<AnimalBehaviour>().eyeOffset.x, static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + e->getComponent<AnimalBehaviour>().eyeOffset.y, e->getComponent<AnimalBehaviour>().line1.x, e->getComponent<AnimalBehaviour>().line1.y);
+		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + e->getComponent<AnimalBehaviour>().eyeOffset.x, static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + e->getComponent<AnimalBehaviour>().eyeOffset.y, e->getComponent<AnimalBehaviour>().line2.x, e->getComponent<AnimalBehaviour>().line2.y);
 	}
 
 	SDL_RenderPresent(renderer);
