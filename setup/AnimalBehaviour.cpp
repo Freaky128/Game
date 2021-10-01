@@ -54,6 +54,8 @@ void AnimalBehaviour::update()
 			eyeOffset.y = (4 * SCALE);
 		}
 
+		//shit ton of magic numbers
+
 		if ( (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x < 296 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y < 260) || (static_cast<int>(animalPos.x) - GameC::camera.x + eyeOffset.x > 344 && static_cast<int>(animalPos.y) - GameC::camera.y + eyeOffset.y > 316) )
 		{
 			line1.x = 340;
@@ -225,17 +227,21 @@ void AnimalBehaviour::update()
 				y2 = false;
 			}
 
-			//printf("state: %d\n", state);
-
+			//printf("state before: %d\n", state);
+			
 			if (state == 1 && x1)
 			{
 				if (!y1)
 				{
 					state = 2;
 				}
-				else
+				else if(!y2)
 				{
 					state = 4;
+				}
+				else
+				{
+					state = 3;
 				}
 			}
 			else if (state == 2 && y1)
@@ -244,9 +250,13 @@ void AnimalBehaviour::update()
 				{
 					state = 1;
 				}
-				else
+				else if (!x2)
 				{
 					state = 3;
+				}
+				else
+				{
+					state = 4;
 				}
 			}
 			else if (state == 3 && x2)
@@ -271,6 +281,17 @@ void AnimalBehaviour::update()
 					state = 3;
 				}
 			}
+
+			if (state == 3 && !x1)
+			{
+				state = 1;
+			}
+			else if (state == 4 && !y1)
+			{
+				state = 2;
+			}
+
+			//printf("state after: %d\n", state);
 		}
 		else
 		{

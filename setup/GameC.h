@@ -43,7 +43,8 @@ public:
 		groupEnemies,
 		groupNPC,
 		groupColliders,
-		groupTriColliders
+		groupTriColliders,
+		groupOverObject
 	};
 
 private:

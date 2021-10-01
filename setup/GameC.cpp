@@ -27,6 +27,8 @@ auto& Player(manager.addEntity());
 auto& mapTex(manager.addEntity());
 auto& NPC(manager.addEntity());
 auto& NPC2(manager.addEntity());
+auto& purpleTree(manager.addEntity());
+auto& tree(manager.addEntity());
 
 //const char* mapfile = "assets/terrain_ss.png";
 
@@ -106,6 +108,14 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	NPC2.addComponent<NPCbehaviour>();
 	NPC2.addGroup(groupNPC);
 
+	purpleTree.addComponent<TransformComponent>((540 * SCALE), (358 * SCALE), 48, 26, 48, 26, SCALE); // magic numbers
+	purpleTree.addComponent<SpriteComponent>("Assets/purple_tree.png", false, "over object");
+	purpleTree.addGroup(groupOverObject);
+
+	tree.addComponent<TransformComponent>((325 * SCALE), (336 * SCALE), 22, 19, 22, 19, SCALE); // magic numbers
+	tree.addComponent<SpriteComponent>("Assets/tree_top.png", false, "over object");
+	tree.addGroup(groupOverObject);
+
 	camera.x = (434 * SCALE) - ((WINDOW_WIDTH / 2) - 24); //magic numbers
 	camera.y = (400 * SCALE) - ((WINDOW_HEIGHT / 2) - 28);
 
@@ -123,7 +133,7 @@ auto& enemies(manager.getGroup(GameC::groupEnemies));
 auto& colliders(manager.getGroup(GameC::groupColliders));
 auto& triColliders(manager.getGroup(GameC::groupTriColliders));
 auto& NPCs(manager.getGroup(GameC::groupNPC));
-
+auto& overObjects(manager.getGroup(GameC::groupOverObject));
 
 void GameC::events() {
 	
@@ -278,6 +288,11 @@ void GameC::render() {
 		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + e->getComponent<AnimalBehaviour>().eyeOffset.x, static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + e->getComponent<AnimalBehaviour>().eyeOffset.y, e->getComponent<AnimalBehaviour>().line2.x, e->getComponent<AnimalBehaviour>().line2.y);
 	}
 
+	for (auto& o : overObjects)
+	{
+		o->draw();
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -355,7 +370,7 @@ bool GameC::rayCol(const SDL_Rect& rRect)
 		char dir = t->getComponent<ColliderComponentTri>().direction;
 		if (Collision::AARL(rRect, tSP, tFP, dir))
 		{
-			printf("ray hit\n");
+			//printf("ray hit\n");
 			return true;
 		}
 	}
@@ -365,7 +380,7 @@ bool GameC::rayCol(const SDL_Rect& rRect)
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, rRect))
 		{
-			printf("ray hit\n");
+			//printf("ray hit\n");
 			return true;
 		}
 	}
