@@ -6,11 +6,13 @@
 #include <vector>
 #include <time.h>
 
-#define SCALE 4
-#define WINDOW_WIDTH 640
+
+#define SCALE 4 // standard amount sprites and assets are scaled by in game
+#define WINDOW_WIDTH 640 // original game boy colour screen size scaled by 4
 #define WINDOW_HEIGHT 576
 
-class ColliderComponent;
+class AssetManager;
+class ColliderComponent; // forward decleration // not quite sure why but need this here 
 
 class GameC
 {
@@ -26,15 +28,16 @@ public:
 
 	bool running();
 
-	static SDL_Rect mouseColRect(const SDL_Rect& mRect);
-	static SDL_Point mouseColTri(const SDL_Rect& mRect);
+	static SDL_Rect mouseColRect(const SDL_Rect& mRect); // checks whether the mouse is colliding with a rectangluar collider. Returns the collider the mouse is colliding with
+	static SDL_Point mouseColTri(const SDL_Rect& mRect); // checks whether the mouse is colliding with a Line (Tri)  collider. Returns the collider the mouse is colliding with
 
-	static bool rayCol(const SDL_Rect& rRect);
+	static bool rayCol(const SDL_Rect& rRect); // checks whether cast rays are hitting colliders or not
 
 	static SDL_Renderer* renderer;
 	static SDL_Event event;
 	static bool run;
 	static SDL_Rect camera;
+	static AssetManager* assets;
 
 	enum groupLabels : std::size_t
 	{

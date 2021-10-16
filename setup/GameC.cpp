@@ -1,3 +1,5 @@
+/*GameC or game control contains all the main functions for high level game control. These are the function used in the main game loop.
+GameC also houses the main manager for the Entity Component System (ECS) and houses the initilisation of core entities, over objects and their components*/
 #include "GameC.h"
 #include "TextureManager.h"
 #include "Components.h"
@@ -12,17 +14,19 @@ Map* map;
 
 SDL_Renderer* GameC::renderer = nullptr;
 
-Manager manager;
+Manager manager; // ECS manager
 
 SDL_Event GameC::event;
 
 SDL_Rect GameC::camera = { 0,0,0,0 };
 
-//std::vector<ColliderComponent*>GameC::colliders;
+AssetManager* GameC::assets = new AssetManager(&manager); // this could be big for reworking
+
+//std::vector<ColliderComponent*>GameC::colliders; // legacy code
 
 bool GameC::run = false;
 
-auto& Player(manager.addEntity());
+auto& Player(manager.addEntity()); // adds initial entities
 //auto& wall(manager.addEntity());
 auto& mapTex(manager.addEntity());
 auto& NPC(manager.addEntity());
@@ -30,22 +34,22 @@ auto& NPC2(manager.addEntity());
 auto& purpleTree(manager.addEntity());
 auto& tree(manager.addEntity());
 
-//const char* mapfile = "assets/terrain_ss.png";
+//const char* mapfile = "assets/terrain_ss.png"; // legacy code
 
-GameC::GameC() {
+GameC::GameC() { // not sure if i actually need these or if i should add something to them
 
 }
 GameC::~GameC() {
 
 }
 
-void GameC::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
+void GameC::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) { // main game setup initilisation function. 
 	int flags = 0;
 	if (fullscreen) {
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
 	
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) // initilises SDL systems 
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 		run = false;
@@ -76,50 +80,54 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 		}
 	}
 
-	srand(time(NULL));
+	srand(time(NULL)); // seeds random number generator
 
 	camera.w = width;
 	camera.h = height;
 
-	mapTex.addComponent<MapComponent>("Assets/Wild_area_home2.png", 0, 0, 1008, 800, SCALE);//magic numbers
+	assets->addTexture("map1", "Assets/Wild_area_home2.png");
+	assets->addTexture("player", "Assets/T_sprite_sheet.png");
+	assets->addTexture("NPC", "Assets/NPC_sprite_sheet.png");
+
+	mapTex.addComponent<MapComponent>("map1", 0, 0, 1008, 800, SCALE); // magic numbers - not sure these ones matter too much // adds the graphical element or texture for the map
 	mapTex.addGroup(GameC::groupMap);
 	
 	//map->LoadMap("assets/map.map", 25, 20); // magic numbers
 
-	map = new Map();
+	map = new Map(); // adds the collidable or physical elements of the map
 	map->LoadCollidersRect("assets/colliders_rect.txt", SCALE);
 	map->LoadCollidersTri("assets/colliders_tri.txt", SCALE);
 	
-	Player.addComponent<TransformComponent>(12,14,12,14,SCALE); // magic numbers
-	Player.addComponent<SpriteComponent>("Assets/T_sprite_sheet.png", true, "Player");
+	Player.addComponent<TransformComponent>(12,14,SCALE); // magic numbers - not too sure how to get rid of them, could add a heap of macros// adds nessaccy components to the entities
+	Player.addComponent<SpriteComponent>("player", true, "Player");
 	Player.addComponent<KeyboardController>();
 	Player.addComponent<ColliderComponent>("player");
 	Player.addGroup(groupPlayers);
 
-	NPC.addComponent<TransformComponent>((368 * SCALE), (412 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
-	NPC.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
+	NPC.addComponent<TransformComponent>((368 * SCALE), (412 * SCALE), 12, 14, SCALE); // magic numbers
+	NPC.addComponent<SpriteComponent>("NPC", true, "NPC");
 	NPC.addComponent<ColliderComponent>("NPC");
 	NPC.addComponent<NPCbehaviour>();
 	NPC.addGroup(groupNPC);
 
-	NPC2.addComponent<TransformComponent>((360 * SCALE), (412 * SCALE), 12, 14, 12, 14, SCALE); // magic numbers
-	NPC2.addComponent<SpriteComponent>("Assets/NPC_sprite_sheet.png", true, "NPC");
+	NPC2.addComponent<TransformComponent>((360 * SCALE), (412 * SCALE), 12, 14, SCALE); // magic numbers
+	NPC2.addComponent<SpriteComponent>("NPC", true, "NPC");
 	NPC2.addComponent<ColliderComponent>("NPC");
 	NPC2.addComponent<NPCbehaviour>();
 	NPC2.addGroup(groupNPC);
 
-	purpleTree.addComponent<TransformComponent>((540 * SCALE), (358 * SCALE), 48, 26, 48, 26, SCALE); // magic numbers
+	purpleTree.addComponent<TransformComponent>((540 * SCALE), (358 * SCALE), 48, 26, SCALE); // magic numbers
 	purpleTree.addComponent<SpriteComponent>("Assets/purple_tree.png", false, "over object");
 	purpleTree.addGroup(groupOverObject);
 
-	tree.addComponent<TransformComponent>((325 * SCALE), (336 * SCALE), 22, 19, 22, 19, SCALE); // magic numbers
+	tree.addComponent<TransformComponent>((325 * SCALE), (336 * SCALE), 22, 19, SCALE); // magic numbers
 	tree.addComponent<SpriteComponent>("Assets/tree_top.png", false, "over object");
 	tree.addGroup(groupOverObject);
 
 	camera.x = (434 * SCALE) - ((WINDOW_WIDTH / 2) - 24); //magic numbers
 	camera.y = (400 * SCALE) - ((WINDOW_HEIGHT / 2) - 28);
 
-	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 20, 300, 1);
+	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 20, 300, 1); // legacy code
 	//wall.addComponent<SpriteComponent>("assets/collider.png");
 	//wall.addComponent<ColliderComponent>("Wall");
 	//wall.addGroup(groupMap);
@@ -150,22 +158,23 @@ void GameC::update() {
 
 	Spawner::spawnBear();
 	
-	SDL_Rect playerCol = Player.getComponent<ColliderComponent>().collider;
-	SDL_Rect cameraPos = camera;
+	SDL_Rect playerCol = Player.getComponent<ColliderComponent>().collider; // records the position of the players collider
+	SDL_Rect cameraPos = camera; // records initial position of the camera
 	
 	//manager.refresh();
 	//manager.update();
 
-	Vector2D pVel = Player.getComponent<TransformComponent>().velocity;
+	Vector2D pVel = Player.getComponent<TransformComponent>().velocity; // sets player velocity and speed
 	const int pSpeed = Player.getComponent<TransformComponent>().speed;
 	
-	camera.x += (pVel.x * pSpeed);
-	camera.y += (pVel.y * pSpeed);
+	camera.x += (pVel.x * pSpeed); // moves the camera according to player velocity making it appear as though the player is moving
+	camera.y += (pVel.y * pSpeed); // because manager has not yet updated this interation of the loop, velocity will be leftover from last loop/frame. 
+								   // effectively there is a frame lag between key press and start of movement. This is a 16.66ms delay. Human reaction time is 250ms so probably neglegable
 
 	//manager.refresh();// might not need these could just update collider positions?
 	//manager.update();
 
-	for (auto& e : NPCs)
+	for (auto& e : NPCs) // updates colliders positions after camera movement [note]: movement is not confirmed nor rendered yet
 	{
 		e->getComponent<ColliderComponent>().update();
 	}
@@ -178,32 +187,34 @@ void GameC::update() {
 	{
 		t->getComponent<ColliderComponentTri>().update();
 	}
+	for (auto& e : enemies)
+	{
+		e->getComponent<ColliderComponent>().update();
+	}
 	
-	for (auto& t : triColliders)
+	for (auto& t : triColliders) // tests for collision of player with triColliders. If collision occurs the camera is reset to its initial position before movement
 	{
 		SDL_Point tSP = t->getComponent<ColliderComponentTri>().startP;
 		SDL_Point tFP = t->getComponent<ColliderComponentTri>().finalP;
 		char dir = t->getComponent<ColliderComponentTri>().direction;
 		if (Collision::AARL(playerCol, tSP, tFP, dir))
 		{
-			camera.x = cameraPos.x;
-			camera.y = cameraPos.y;
+			camera = cameraPos;
 			printf("hit tri\n");
 		}
 	}
 	
-	for (auto& c : colliders)
+	for (auto& c : colliders) // tests for collision of player with rectColliders. If collision occurs the camera is reset to its initial position before movement
 	{
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, playerCol))
 		{
-			camera.x = cameraPos.x;
-			camera.y = cameraPos.y;
+			camera = cameraPos;
 			printf("hit\n");
 		}
 	}
 
-	for (auto& e : NPCs)
+	for (auto& e : NPCs) // tests for collision of player with NPCs. If collision occurs the camera is reset to its initial position before movement
 	{
 		SDL_Rect NPCcol = e->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(NPCcol, playerCol))
@@ -214,8 +225,8 @@ void GameC::update() {
 		}
 	}
 
-	manager.update();
-	manager.refresh();
+	manager.refresh(); // deletes any entities made inactive
+	manager.update(); // calls the update function of all attached componets 
 
 	for (auto& e : NPCs)
 	{
@@ -252,6 +263,12 @@ void GameC::update() {
 		t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
 	}*/
 }
+
+long double cTime = 0;
+long double oTime = 0;
+float iFPS = 0;
+float aFPS = 0;
+float frames = 0;
 
 void GameC::render() {
 	SDL_RenderClear(renderer);
@@ -294,6 +311,18 @@ void GameC::render() {
 	}
 
 	SDL_RenderPresent(renderer);
+	
+	cTime = SDL_GetTicks();
+	frames++;
+
+	iFPS = 1000.f / (cTime - oTime);
+	oTime = cTime;
+	//printf("instant FPS %0.3f", iFPS);
+
+	aFPS = frames / (cTime / 1000.f);
+	//printf("average FPS: %0.3f", aFPS);
+
+	//printf("time: %0.3Lf", cTime);
 }
 
 void GameC::clean() {
@@ -352,7 +381,7 @@ SDL_Point GameC::mouseColTri(const SDL_Rect& mRect)
 		SDL_Point tSPoint = t->getComponent<ColliderComponentTri>().startP;
 		SDL_Point tFPoint = t->getComponent<ColliderComponentTri>().finalP;
 		char tDir = t->getComponent<ColliderComponentTri>().direction;
-		if (Collision::AARL(mRect, tSPoint, tFPoint, tDir))
+		if (Collision::AARL(mRect, tSPoint, tFPoint, tDir)) // is this over complicated? could i just pass in the whole entity or component or something
 		{
 			sp = t->getComponent<ColliderComponentTri>().startP;
 			t->destroy();

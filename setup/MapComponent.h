@@ -2,7 +2,7 @@
 
 #include "ECS.h"
 #include <SDL.h>
-
+#include "AssetManager.h"
 
 class MapComponent : public Component
 {
@@ -19,9 +19,9 @@ public:
 		SDL_DestroyTexture(texture);
 	}
 
-	MapComponent(const char* path, int xpos, int ypos, int width, int height, int scale)
+	MapComponent(std::string id, int xpos, int ypos, int width, int height, int scale)
 	{
-		texture = TextureManager::LoadTexture(path);
+		texture = GameC::assets->getTexture(id);
 
 		position.x = xpos;
 		position.y = ypos;

@@ -17,7 +17,7 @@ void Spawner::spawnBear()
 		if (spawnNum == 1)
 		{
 			auto& bear(manager.addEntity());
-			bear.addComponent<TransformComponent>((400 * SCALE), (600 * SCALE), 34, 22, 34, 22, SCALE); // magic numbers
+			bear.addComponent<TransformComponent>((400 * SCALE), (600 * SCALE), 34, 22, SCALE); // magic numbers
 			bear.addComponent<SpriteComponent>("Assets/bear_v2.png", true, "bear");
 			bear.addComponent<ColliderComponent>("bear");
 			bear.addComponent<AnimalBehaviour>();
