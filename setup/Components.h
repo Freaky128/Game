@@ -11,3 +11,4 @@
 #include "NPCbehaviour.h"
 #include "ColliderComponentTri.h"
 #include "AnimalBehaviour.h"
+#include "UILabel.h"

@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 #include <vector>
 #include <time.h>
+#include <SDL_ttf.h>
 
 #define SCALE 4 // standard amount sprites and assets are scaled by in game
 #define WINDOW_WIDTH 640 // original game boy colour screen size scaled by 4
@@ -44,7 +45,8 @@ public:
 		groupNPC,
 		groupColliders,
 		groupTriColliders,
-		groupOverObject
+		groupOverObject,
+		groupHUD
 	};
 
 private:

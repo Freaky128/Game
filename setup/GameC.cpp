@@ -22,7 +22,6 @@ SDL_Rect GameC::camera = { 0,0,0,0 };
 
 //std::vector<ColliderComponent*>GameC::colliders; // legacy code
 
-
 bool GameC::run = false;
 
 auto& Player(manager.addEntity()); // adds initial entities
@@ -32,6 +31,7 @@ auto& NPC(manager.addEntity());
 auto& NPC2(manager.addEntity());
 auto& purpleTree(manager.addEntity());
 auto& tree(manager.addEntity());
+auto& FPSlabel(manager.addEntity());
 
 //const char* mapfile = "assets/terrain_ss.png"; // legacy code
 
@@ -75,7 +75,16 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 				printf("Renderer created...\n");
 
-				run = true;
+				if (TTF_Init() < NULL)
+				{
+					printf("SDL_ttf could not be initilised! TTF_Error: %s\n", TTF_GetError());
+				}
+				else
+				{
+					printf("TTF initialised...\n");
+					run = true;
+				}
+				
 			}
 		}
 	}
@@ -120,6 +129,11 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	tree.addComponent<SpriteComponent>("Assets/tree_top.png", false, "over object");
 	tree.addGroup(groupOverObject);
 
+	SDL_Color white = { 255,255,255,255 };
+
+	FPSlabel.addComponent<UILabel>(0, 0, 16, "test string", "Assets/Helvetica.ttf", white);
+	FPSlabel.addGroup(groupHUD);
+
 	camera.x = (434 * SCALE) - ((WINDOW_WIDTH / 2) - 24); //magic numbers
 	camera.y = (400 * SCALE) - ((WINDOW_HEIGHT / 2) - 28);
 
@@ -129,6 +143,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	//wall.addGroup(groupMap);
 
 	LvlColliderEditor::init();
+
+	printf("Ticks per seconds: %lu\n", SDL_GetPerformanceFrequency());
 }
 
 auto& mapStuff(manager.getGroup(GameC::groupMap));
@@ -138,6 +154,7 @@ auto& colliders(manager.getGroup(GameC::groupColliders));
 auto& triColliders(manager.getGroup(GameC::groupTriColliders));
 auto& NPCs(manager.getGroup(GameC::groupNPC));
 auto& overObjects(manager.getGroup(GameC::groupOverObject));
+auto& HUD(manager.getGroup(GameC::groupHUD));
 
 void GameC::events() {
 	
@@ -289,20 +306,25 @@ void GameC::render() {
 		t->draw();
 	}
 
-	LvlColliderEditor::draw();
-
+	for (auto& o : overObjects)
+	{
+		o->draw();
+	}
+	
 	for (auto& e : enemies)
 	{
 		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + e->getComponent<AnimalBehaviour>().eyeOffset.x, static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + e->getComponent<AnimalBehaviour>().eyeOffset.y, e->getComponent<AnimalBehaviour>().line1.x, e->getComponent<AnimalBehaviour>().line1.y);
 		SDL_RenderDrawLine(GameC::renderer, static_cast<int>(e->getComponent<TransformComponent>().position.x) - GameC::camera.x + e->getComponent<AnimalBehaviour>().eyeOffset.x, static_cast<int>(e->getComponent<TransformComponent>().position.y) - GameC::camera.y + e->getComponent<AnimalBehaviour>().eyeOffset.y, e->getComponent<AnimalBehaviour>().line2.x, e->getComponent<AnimalBehaviour>().line2.y);
 	}
 
-	for (auto& o : overObjects)
+	for (auto& h : HUD)
 	{
-		o->draw();
+		h->draw();
 	}
 
-	SDL_RenderPresent(renderer);
+	LvlColliderEditor::draw();
+
+	SDL_RenderPresent(renderer);	
 }
 
 void GameC::clean() {

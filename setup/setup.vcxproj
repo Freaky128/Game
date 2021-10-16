@@ -28,8 +28,10 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NPCbehaviour.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -47,11 +49,14 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="NPCbehaviour.h" />
+    <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="TileComponent.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="UILabel.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
