@@ -1,4 +1,4 @@
-#define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC // shit for dedugging memoery leaks
 #include <stdlib.h>
 #include <crtdbg.h>
 
@@ -12,9 +12,9 @@
 int main(int argc, char* args[]) {
 	GameC gc;
 
-	gc.init("Pokemon Like Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, false);
+	gc.init("Test Enviroment", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, false); // initilises SDL and window
 
-	while (gc.running()) {
+	while (gc.running()) { // main game loop
 		
 		gc.events();
 		gc.update();
@@ -22,12 +22,12 @@ int main(int argc, char* args[]) {
 		 
 	}
 
-	LvlColliderEditor::writeRect();
+	LvlColliderEditor::writeRect(); // writes added colliders to .txt files
 	LvlColliderEditor::writeTri();
 
-	gc.clean();
+	gc.clean(); // deallocates memory
 
-	_CrtDumpMemoryLeaks();
+	_CrtDumpMemoryLeaks(); // more shit for dedugging memoery leaks
 
 	return 0;
 }

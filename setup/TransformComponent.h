@@ -38,18 +38,16 @@ public:
 		position.y = y;
 	}
 
-	TransformComponent(float x, float y, int iw, int ih, int fw, int fh, int sc)
+	TransformComponent(float x, float y, int w, int h, int sc)
 	{
 		position.x = x;
 		position.y = y;
-		height = ih;
-		width = iw;
-		finalHeight = fh;
-		finalWidth = fw;
+		height = h;
+		width = w;
 		scale = sc;
 	}
 
-	/*TransformComponent(float x, float y, int iw, int ih, int sc)
+	/*TransformComponent(float x, float y, int iw, int ih, int sc) // legacy code
 	{
 		position.x = x;
 		position.y = y;
@@ -60,20 +58,16 @@ public:
 		scale = sc;
 	}*/
 
-	TransformComponent(int iw, int ih, int fw, int fh, int sc)
+	TransformComponent(int w, int h, int sc)
 	{
 		position.x = (WINDOW_WIDTH / 2) - 24; // magic numbers
 		//std::cout << position.x << std::endl;
 		position.y = (WINDOW_HEIGHT / 2) - 28;
 		//std::cout << position.y << std::endl;
-		height = ih;
+		height = h;
 		//std::cout << height << std::endl;
-		width = iw;
+		width = w;
 		//std::cout << width << std::endl;
-		finalHeight = fh;
-		//std::cout << finalHeight << std::endl;
-		finalWidth = fw;
-		//std::cout << finalWidth << std::endl;
 		scale = sc;
 	}
 
