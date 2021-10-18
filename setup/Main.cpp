@@ -6,22 +6,29 @@
 #include "GameC.h"
 #include "LvlColliderEditor.h"
 #include "PerfTimer.h"
+#include "Timer.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 576
 
 int main(int argc, char* args[]) {
 	GameC gc;
-	PerfTimer FPSperfTimer;
+	//PerfTimer FPSperfTimer;
+	//Timer FPSTimer;
 
-	Uint64 fTime = 0;
-	Uint64 sTime = 0;
-	long double ms = 0;
-	int frames = 0;
+	//Uint64 PfTime = 0;
+	//Uint64 PsTime = 0;
+	//long double ms = 0;
+	//int Pframes = 0;
+
+	//Uint32 fTime = 0;
+	//Uint32 sTime = 0;
+	//int frames = 0;
 
 	gc.init("Test Enviroment", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, false); // initilises SDL and window
 
-	FPSperfTimer.start();
+	//FPSperfTimer.start();
+	//FPSTimer.start();
 	
 	while (gc.running()) { // main game loop
 		
@@ -29,18 +36,30 @@ int main(int argc, char* args[]) {
 		gc.update();
 		gc.render();
 		
-		fTime = FPSperfTimer.getTicks();
+		//PfTime = FPSperfTimer.getTicks();
+		//fTime = FPSTimer.getTicks();
 
-		if (fTime - sTime >= 10000000)
+		/*if (PfTime - PsTime >= SDL_GetPerformanceFrequency())
 		{
-			printf("FPS: %d ", frames);
+			//printf("pFPS: %d ", Pframes);
+			PsTime = PfTime;
+			Pframes = 0;
+		}
+		else
+		{
+			Pframes++;
+		}*/
+
+		/*if (fTime - sTime >= 1000)
+		{
+			//printf("sFPS: %d ", frames);
 			sTime = fTime;
 			frames = 0;
 		}
 		else
 		{
 			frames++;
-		}
+		}*/
 		
 		//printf("instant FPS: %llu ", (10000000 / (fTime - sTime)));
 		//ms = (fTime - sTime) / 10000.f;

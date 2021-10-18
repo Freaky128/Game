@@ -66,7 +66,7 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 		else {
 			printf("Window created...\n");
 
-			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			if (renderer == NULL) {
 				printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
 				run = false;
@@ -131,8 +131,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 
 	SDL_Color white = { 255,255,255,255 };
 
-	FPSlabel.addComponent<UILabel>(0, 0, 16, "test string", "Assets/Helvetica.ttf", white);
-	FPSlabel.addGroup(groupHUD);
+	//FPSlabel.addComponent<UILabel>(0, 0, 16, "test string", "Assets/Helvetica.ttf", white);
+	//FPSlabel.addGroup(groupHUD);
 
 	camera.x = (434 * SCALE) - ((WINDOW_WIDTH / 2) - 24); //magic numbers
 	camera.y = (400 * SCALE) - ((WINDOW_HEIGHT / 2) - 28);
