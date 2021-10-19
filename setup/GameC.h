@@ -24,6 +24,7 @@ public:
 	void update();
 	void render();
 	void clean();
+	void getFPS(int FPS);
 
 	bool running();
 

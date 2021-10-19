@@ -7,6 +7,7 @@ GameC also houses the main manager for the Entity Component System (ECS) and hou
 #include "Collision.h"
 #include "LvlColliderEditor.h"
 #include "Spawner.h"
+#include <sstream>
 
 #define SCALE 4
 
@@ -19,6 +20,8 @@ Manager manager; // ECS manager
 SDL_Event GameC::event;
 
 SDL_Rect GameC::camera = { 0,0,0,0 };
+
+int FPSc = 0;
 
 //std::vector<ColliderComponent*>GameC::colliders; // legacy code
 
@@ -66,7 +69,7 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 		else {
 			printf("Window created...\n");
 
-			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (renderer == NULL) {
 				printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
 				run = false;
@@ -131,8 +134,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 
 	SDL_Color white = { 255,255,255,255 };
 
-	//FPSlabel.addComponent<UILabel>(0, 0, 16, "test string", "Assets/Helvetica.ttf", white);
-	//FPSlabel.addGroup(groupHUD);
+	FPSlabel.addComponent<UILabel>(0, 0, 16, "test string", "Assets/Helvetica.ttf", white);
+	FPSlabel.addGroup(groupHUD);
 
 	camera.x = (434 * SCALE) - ((WINDOW_WIDTH / 2) - 24); //magic numbers
 	camera.y = (400 * SCALE) - ((WINDOW_HEIGHT / 2) - 28);
@@ -167,12 +170,21 @@ void GameC::events() {
 
 }
 
+
 void GameC::update() {
 
 	Spawner::spawnBear();
 	
 	SDL_Rect playerCol = Player.getComponent<ColliderComponent>().collider; // records the position of the players collider
 	SDL_Rect cameraPos = camera; // records initial position of the camera
+
+	std::stringstream FPSs;
+	FPSs << "FPS: " << FPSc;
+	
+	FPSlabel.getComponent<UILabel>().SetLabelText(FPSs.str());
+	
+	FPSs.str(std::string());
+	FPSs.clear();
 	
 	//manager.refresh();
 	//manager.update();
@@ -356,6 +368,11 @@ void GameC::clean() {
 
 bool GameC::running() {
 	return run; 
+}
+
+void GameC::getFPS(int FPS)
+{
+	FPSc = FPS;
 }
 
 SDL_Rect GameC::mouseColRect(const SDL_Rect& mRect)

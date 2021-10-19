@@ -21,7 +21,7 @@ public:
 		TTF_CloseFont(labelFont);
 	}
 
-	void SetLabelText(std::string labelText)
+	void SetLabelText(const std::string labelText)
 	{
 		labelTexture = TextureManager::LoadFontTexture(labelFont, labelText.c_str(), textColour);
 
@@ -33,6 +33,7 @@ public:
 	void draw() override
 	{
 		TextureManager::Draw(labelTexture, srcR, destR, SDL_FLIP_NONE);
+		SDL_DestroyTexture(labelTexture);
 	}
 
 private:
