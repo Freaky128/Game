@@ -71,6 +71,7 @@ void NPCbehaviour::update()
 	}
 
 	entity->getComponent<ColliderComponent>().update();
+	entity->getComponent<SpriteComponent>().update();
 }
  
 

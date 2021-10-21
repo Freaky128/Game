@@ -171,7 +171,7 @@ void GameC::events() {
 }
 
 
-void GameC::update() {
+void GameC::update() { // 
 
 	Spawner::spawnBear();
 	
@@ -182,12 +182,6 @@ void GameC::update() {
 	FPSs << "FPS: " << FPSc;
 	
 	FPSlabel.getComponent<UILabel>().SetLabelText(FPSs.str());
-	
-	FPSs.str(std::string());
-	FPSs.clear();
-	
-	//manager.refresh();
-	//manager.update();
 
 	Vector2D pVel = Player.getComponent<TransformComponent>().velocity; // sets player velocity and speed
 	const int pSpeed = Player.getComponent<TransformComponent>().speed;
@@ -253,9 +247,9 @@ void GameC::update() {
 	}
 
 	manager.refresh(); // deletes any entities made inactive
-	manager.update(); // calls the update function of all attached components 
+	manager.update(); // now that the camera position is confirmed the update function of all attached components is called.
 
-	for (auto& e : NPCs)
+	for (auto& e : NPCs) // tests for collision of NPCs with rect colliders
 	{
 		for (auto& c : colliders)
 		{
@@ -264,7 +258,7 @@ void GameC::update() {
 		}
 	}
 
-	for (auto& e : NPCs)
+	for (auto& e : NPCs) // tests for collision of NPCs with tri colliders
 	{
 		for (auto& t : triColliders)
 		{
@@ -275,16 +269,16 @@ void GameC::update() {
 		}
 	}
 
-	for (auto& e : NPCs)
+	for (auto& e : NPCs) // tests for collision of NPCs with the player
 	{
 			e->getComponent<NPCbehaviour>().CollisionDetection(playerCol);		
 	}
 
-	LvlColliderEditor::update();
+	LvlColliderEditor::update(); // updates the in game level collider editor
 
-	//printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", camera.x, camera.y, camera.w, camera.h);
+	//printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", camera.x, camera.y, camera.w, camera.h); // debugging info about camera
 
-	/*for (auto t : tiles)
+	/*for (auto t : tiles) // legacy code for tile map
 	{
 		t->getComponent<TileComponent>().destRect.x += -(pVel.x * pSpeed);
 		t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
