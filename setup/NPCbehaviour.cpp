@@ -1,6 +1,12 @@
 #include "NPCbehaviour.h"
 #include "Collision.h"
 
+extern Manager manager;
+
+auto& colliders_NPC(manager.getGroup(GameC::groupColliders));
+auto& triColliders_NPC(manager.getGroup(GameC::groupTriColliders));
+auto& players_NPC(manager.getGroup(GameC::groupPlayers));
+
 void NPCbehaviour::update()
 {
 	NPCIpos = transform->position;
@@ -69,8 +75,28 @@ void NPCbehaviour::update()
 			sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 		}
 	}
+	
+	entity->getComponent<ColliderComponent>().update(); // hit box will temporarily clip into colliding object however should not have an effect
 
-	entity->getComponent<ColliderComponent>().update();
+	for (auto& c : colliders_NPC)
+	{
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		CollisionDetection(cCol);
+	}
+
+	for (auto& t : triColliders_NPC)
+	{
+		SDL_Point sp = t->getComponent<ColliderComponentTri>().startP;
+		SDL_Point fp = t->getComponent<ColliderComponentTri>().finalP;
+		char dir = t->getComponent<ColliderComponentTri>().direction;
+		CollisionDetection(sp, fp, dir);
+	}
+
+	for (auto& p : players_NPC) // tests for collision of NPCs with the player
+	{
+		CollisionDetection(p->getComponent<ColliderComponent>().collider);
+	}
+
 	entity->getComponent<SpriteComponent>().update();
 }
  

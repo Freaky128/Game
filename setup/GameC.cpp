@@ -249,40 +249,10 @@ void GameC::update() { //
 	manager.refresh(); // deletes any entities made inactive
 	manager.update(); // now that the camera position is confirmed the update function of all attached components is called.
 
-	for (auto& e : NPCs) // tests for collision of NPCs with rect colliders
-	{
-		for (auto& c : colliders)
-		{
-			SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-			e->getComponent<NPCbehaviour>().CollisionDetection(cCol);
-		}
-	}
-
-	for (auto& e : NPCs) // tests for collision of NPCs with tri colliders
-	{
-		for (auto& t : triColliders)
-		{
-			SDL_Point sp = t->getComponent<ColliderComponentTri>().startP;
-			SDL_Point fp = t->getComponent<ColliderComponentTri>().finalP;
-			char dir = t->getComponent<ColliderComponentTri>().direction;
-			e->getComponent<NPCbehaviour>().CollisionDetection(sp, fp, dir);
-		}
-	}
-
-	for (auto& e : NPCs) // tests for collision of NPCs with the player
-	{
-			e->getComponent<NPCbehaviour>().CollisionDetection(playerCol);		
-	}
-
 	LvlColliderEditor::update(); // updates the in game level collider editor
 
 	//printf("c.x: %d, c.y: %d, c.w: %d, c.h: %d\n", camera.x, camera.y, camera.w, camera.h); // debugging info about camera
 
-	/*for (auto t : tiles) // legacy code for tile map
-	{
-		t->getComponent<TileComponent>().destRect.x += -(pVel.x * pSpeed);
-		t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
-	}*/
 }
 
 void GameC::render() {
