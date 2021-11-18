@@ -66,10 +66,10 @@ void PerfTimer::unpause()
     }
 }
 
-Uint32 PerfTimer::getTicks()
+Uint64 PerfTimer::getTicks()
 {
     //The actual timer time
-    Uint32 time = 0;
+    Uint64 time = 0;
 
     //If the timer is running
     if (started)

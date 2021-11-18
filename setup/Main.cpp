@@ -1,4 +1,4 @@
-#define _CRTDBG_MAP_ALLOC // shit for dedugging memoery leaks
+#define _CRTDBG_MAP_ALLOC // shit for dedugging memory leaks
 #include <stdlib.h>
 #include <crtdbg.h>
 
@@ -110,7 +110,7 @@ int main(int argc, char* args[]) {
 
 	gc.clean(); // deallocates memory
 
-	_CrtDumpMemoryLeaks(); // more shit for dedugging memoery leaks
+	_CrtDumpMemoryLeaks(); // more shit for dedugging memory leaks
 
 	return 0;
 }
