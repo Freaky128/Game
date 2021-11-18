@@ -9,6 +9,8 @@ class KeyboardController : public Component
 public:
 	TransformComponent* transform;
 	SpriteComponent* sprite;
+	int runVel = 4;
+	int nomVel = 2;
 
 	void init() override
 	{
@@ -22,28 +24,28 @@ public:
 		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 		if (currentKeyStates[SDL_SCANCODE_W] && currentKeyStates[SDL_SCANCODE_SPACE])
 		{
-			transform->velocity.y = -4;
+			transform->velocity.y = -runVel;
 			transform->velocity.x = 0;
 			sprite->Play("WalkUp");
 			sprite->spriteFlip = SDL_FLIP_NONE;
 		}
 		else if (currentKeyStates[SDL_SCANCODE_S] && currentKeyStates[SDL_SCANCODE_SPACE])
 		{
-			transform->velocity.y = 4;
+			transform->velocity.y = runVel;
 			transform->velocity.x = 0;
 			sprite->Play("WalkDown");
 			sprite->spriteFlip = SDL_FLIP_NONE;
 		}
 		else if (currentKeyStates[SDL_SCANCODE_A] && currentKeyStates[SDL_SCANCODE_SPACE])
 		{
-			transform->velocity.x = -4;
+			transform->velocity.x = -runVel;
 			transform->velocity.y = 0;
 			sprite->Play("WalkLeft");
 			sprite->spriteFlip = SDL_FLIP_NONE;
 		}
 		else if (currentKeyStates[SDL_SCANCODE_D] && currentKeyStates[SDL_SCANCODE_SPACE])
 		{
-			transform->velocity.x = 4;
+			transform->velocity.x = runVel;
 			transform->velocity.y = 0;
 			sprite->Play("WalkRight");
 			sprite->spriteFlip = SDL_FLIP_NONE;
@@ -52,28 +54,28 @@ public:
 		{
 			if (currentKeyStates[SDL_SCANCODE_W])
 			{
-				transform->velocity.y = -2;
+				transform->velocity.y = -nomVel;
 				transform->velocity.x = 0;
 				sprite->Play("WalkUp");
 				sprite->spriteFlip = SDL_FLIP_NONE;
 			}
 			else if (currentKeyStates[SDL_SCANCODE_S])
 			{
-				transform->velocity.y = 2;
+				transform->velocity.y = nomVel;
 				transform->velocity.x = 0;
 				sprite->Play("WalkDown");
 				sprite->spriteFlip = SDL_FLIP_NONE;
 			}
 			else if (currentKeyStates[SDL_SCANCODE_A])
 			{
-				transform->velocity.x = -2;
+				transform->velocity.x = -nomVel;
 				transform->velocity.y = 0;
 				sprite->Play("WalkLeft");
 				sprite->spriteFlip = SDL_FLIP_NONE;
 			}
 			else if (currentKeyStates[SDL_SCANCODE_D])
 			{
-				transform->velocity.x = 2;
+				transform->velocity.x = nomVel;
 				transform->velocity.y = 0;
 				sprite->Play("WalkRight");
 				sprite->spriteFlip = SDL_FLIP_NONE;

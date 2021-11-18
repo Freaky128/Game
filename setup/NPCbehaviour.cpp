@@ -76,7 +76,7 @@ void NPCbehaviour::update()
 		}
 	}
 	
-	entity->getComponent<ColliderComponent>().update(); // hit box will temporarily clip into colliding object however should not have an effect
+	entity->getComponent<ColliderComponent>().update(); // hit box will temporarily appear to clip into colliding object however should not have an effect
 
 	for (auto& c : colliders_NPC)
 	{

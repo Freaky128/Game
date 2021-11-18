@@ -60,9 +60,9 @@ public:
 
 	TransformComponent(int w, int h, int sc)
 	{
-		position.x = (WINDOW_WIDTH / 2) - 24; // magic numbers
+		position.x = (WINDOW_WIDTH / 2) - (w / 2) * SCALE;
 		//std::cout << position.x << std::endl;
-		position.y = (WINDOW_HEIGHT / 2) - 28;
+		position.y = (WINDOW_HEIGHT / 2) - (h/ 2) * SCALE;
 		//std::cout << position.y << std::endl;
 		height = h;
 		//std::cout << height << std::endl;

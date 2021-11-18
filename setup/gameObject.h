@@ -1,6 +1,6 @@
 #pragma once
 #include "gameC.h"
-class gameObject
+class gameObject // not sure why I still keep these files they have been obsolete for ages now
 {
 public:
 	gameObject(const char* spritesheet, int x, int y, int srcRectW, int srcRectH);

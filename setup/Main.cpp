@@ -1,4 +1,4 @@
-#define _CRTDBG_MAP_ALLOC // shit for dedugging memoery leaks
+#define _CRTDBG_MAP_ALLOC // shit for dedugging memory leaks
 #include <stdlib.h>
 #include <crtdbg.h>
 
@@ -37,30 +37,30 @@ int main(int argc, char* args[]) {
 
 		finishTime = FPSperfTimer.getTicks();
 		
-		//if (mFPScap) // busy waiting cycle method - very good FPS but uses more CPU
-		//{
-		//	while ((finishTime - startTime) < targetDelay)
-		//	{
-		//		finishTime = FPSperfTimer.getTicks();
-		//	}
-		//	startTime = finishTime;
-		//}
+		/*if (mfpscap) // busy waiting cycle method - very good fps but uses more cpu // should impliment a way to dynamicly pick which method to use at run time
+		{
+			while ((finishtime - starttime) < targetdelay)
+			{
+				finishtime = fpsperftimer.getticks();
+			}
+			starttime = finishtime;
+		}*/
 
-		//if (mFPScap) // delay method - lower FPS but low CPU usage
-		//{
-		//	
-		//	diff = targetDelay - (finishTime - startTime);
-		//	divFeq = static_cast<float>(diff) / SDL_GetPerformanceFrequency();
-		//	divFeq = divFeq * 1000.f;
-		//	
-		//	if (divFeq > 0) 
-		//	{
-		//		SDL_Delay(divFeq);
-		//	}
-		//	
-		//	finishTime = FPSperfTimer.getTicks();
-		//	startTime = finishTime;
-		//}
+		/*if (mFPScap) // delay method - lower FPS but low CPU usage
+		{
+			
+			diff = targetDelay - (finishTime - startTime);
+			divFeq = static_cast<float>(diff) / SDL_GetPerformanceFrequency();
+			divFeq = divFeq * 1000.f;
+			
+			if (divFeq > 0) 
+			{
+				SDL_Delay(divFeq);
+			}
+			
+			finishTime = FPSperfTimer.getTicks();
+			startTime = finishTime;
+		}*/
 
 		if (mFPScap) // hybrid delay cycle method - good FPS and medium CPU usage
 		{
@@ -110,7 +110,7 @@ int main(int argc, char* args[]) {
 
 	gc.clean(); // deallocates memory
 
-	_CrtDumpMemoryLeaks(); // more shit for dedugging memoery leaks
+	_CrtDumpMemoryLeaks(); // more shit for dedugging memory leaks
 
 	return 0;
 }

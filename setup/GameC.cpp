@@ -9,8 +9,6 @@ GameC also houses the main manager for the Entity Component System (ECS) and hou
 #include "Spawner.h"
 #include <sstream>
 
-#define SCALE 4
-
 Map* map;
 
 SDL_Renderer* GameC::renderer = nullptr;
@@ -103,8 +101,8 @@ void GameC::init(const char* title, int xpos, int ypos, int width, int height, b
 	//map->LoadMap("assets/map.map", 25, 20); // magic numbers
 
 	map = new Map(); // adds the collidable or physical elements of the map
-	map->LoadCollidersRect("assets/colliders_rect.txt", SCALE);
-	map->LoadCollidersTri("assets/colliders_tri.txt", SCALE);
+	map->LoadCollidersRect("Assets/colliders_rect.txt", SCALE);
+	map->LoadCollidersTri("Assets/colliders_tri.txt", SCALE);
 	
 	Player.addComponent<TransformComponent>(12, 14, SCALE); // magic numbers - not too sure how to get rid of them, could add a heap of macros // adds nessaccy components to the entities
 	Player.addComponent<SpriteComponent>("Assets/T_sprite_sheet.png", true, "Player");
@@ -171,7 +169,7 @@ void GameC::events() {
 }
 
 
-void GameC::update() { // 
+void GameC::update() {
 
 	Spawner::spawnBear();
 	
@@ -341,7 +339,7 @@ void GameC::getFPS(int FPS)
 
 SDL_Rect GameC::mouseColRect(const SDL_Rect& mRect)
 {
-	SDL_Rect Col;
+	SDL_Rect Col = { -1,-1,-1,-1 };
 
 	for (auto& c : colliders)
 	{
@@ -353,11 +351,13 @@ SDL_Rect GameC::mouseColRect(const SDL_Rect& mRect)
 			return Col;
 		}
 	}
+
+	return Col;
 }
 
 SDL_Point GameC::mouseColTri(const SDL_Rect& mRect)
 {
-	SDL_Point sp;
+	SDL_Point sp = { -1,- 1 };
 
 	for (auto& t : triColliders)
 	{
@@ -371,6 +371,8 @@ SDL_Point GameC::mouseColTri(const SDL_Rect& mRect)
 			return sp;
 		}
 	}
+
+	return sp;
 }
 
 bool GameC::rayCol(const SDL_Rect& rRect)

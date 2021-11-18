@@ -1,7 +1,5 @@
 #include "Collision.h"
 
-// TODO [Matthew] lots of magic number 4's. need to be replaced with mapscale
-
 bool Collision::AABB(const SDL_Rect& recA, const SDL_Rect& recB)
 {
 	if (
@@ -35,7 +33,7 @@ bool Collision::AARL(const SDL_Rect& rec, const SDL_Point& Spoint, const SDL_Poi
 {
 	int index;
 	int length;
-	length = (Fpoint.x - Spoint.x) + 4; // magic number mapscale
+	length = (Fpoint.x - Spoint.x) + SCALE;
 	
 	if (direction == 'd')
 	{
@@ -45,13 +43,13 @@ bool Collision::AARL(const SDL_Rect& rec, const SDL_Point& Spoint, const SDL_Poi
 			rec.y + rec.h > Spoint.y &&
 			Spoint.y + length > rec.y)
 		{
-			for (index = 0; index < (length / 4); index++)
+			for (index = 0; index < (length / SCALE); index++)
 			{
 				if (
-					rec.x + rec.w > Spoint.x + (index * 4) &&
-					(Spoint.x + (index * 4)) + 3 > rec.x &&
-					rec.y + rec.h > Spoint.y + (index * 4) &&
-					(Spoint.y + (index * 4)) + 3 > rec.y)
+					rec.x + rec.w > Spoint.x + (index * SCALE) &&
+					(Spoint.x + (index * SCALE)) + 3 > rec.x &&
+					rec.y + rec.h > Spoint.y + (index * SCALE) &&
+					(Spoint.y + (index * SCALE)) + 3 > rec.y)
 				{
 					return true;
 				}
@@ -69,16 +67,16 @@ bool Collision::AARL(const SDL_Rect& rec, const SDL_Point& Spoint, const SDL_Poi
 		if ( // magic numbers mapscale
 			rec.x + rec.w > Spoint.x &&
 			Spoint.x + length > rec.x &&
-			rec.y + rec.h > Spoint.y - (length - 4) &&
-			Spoint.y + 4 > rec.y)
+			rec.y + rec.h > Spoint.y - (length - SCALE) &&
+			Spoint.y + SCALE > rec.y)
 		{
-			for (index = 0; index < (length / 4); index++)
+			for (index = 0; index < (length / SCALE); index++)
 			{
 				if (
-					rec.x + rec.w > Spoint.x + (index * 4) &&
-					(Spoint.x + (index * 4)) + 3 > rec.x &&
-					rec.y + rec.h > Spoint.y - (index * 4) &&
-					(Spoint.y - (index * 4)) + 3 > rec.y)
+					rec.x + rec.w > Spoint.x + (index * SCALE) &&
+					(Spoint.x + (index * SCALE)) + 3 > rec.x &&
+					rec.y + rec.h > Spoint.y - (index * SCALE) &&
+					(Spoint.y - (index * SCALE)) + 3 > rec.y)
 				{
 					return true;
 				}

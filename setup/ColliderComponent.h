@@ -57,9 +57,9 @@ public:
 	{
 		if (tag == "player")
 		{
-			collider.x = static_cast<int>(transform->position.x + transform->scale);
+			collider.x = static_cast<int>(transform->position.x + SCALE);
 			collider.y = static_cast<int>(transform->position.y);
-			collider.w = sprite->destRect.w - (transform->scale * 2); // should maybe use srcRect
+			collider.w = sprite->destRect.w - (SCALE * 2);
 			collider.h = sprite->destRect.h;
 			destR = { collider.x, collider.y, collider.w, collider.h };
 		}
