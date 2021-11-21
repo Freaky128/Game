@@ -46,7 +46,7 @@ public:
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
 
-		//tex = TextureManager::LoadTexture("assets/collider.png");
+		tex = TextureManager::LoadTexture("assets/collider.png");
 		srcR = { 0, 0, 32, 32 };
 		destR = { collider.x, collider.y, collider.w, collider.h };
 

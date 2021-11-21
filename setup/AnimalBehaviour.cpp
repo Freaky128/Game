@@ -3,6 +3,8 @@
 extern Manager manager; // imports external manager
 
 auto& players_animal(manager.getGroup(GameC::groupPlayers)); // gets group from manager and sets it to a local group varible
+auto& colliders_animal(manager.getGroup(GameC::groupColliders));
+auto& triColliders_animal(manager.getGroup(GameC::groupTriColliders));
 
 SDL_Rect playerPos;
 int playerPosXW, playerPosYH;
@@ -135,13 +137,25 @@ void AnimalBehaviour::update()
 			line2.y = playerPosYH;
 		}
 
+		//printf("Bear pos start. x: %f, y: %f\n", transform->position.x, transform->position.y);
+
 		if (!castLine(relativeEyePos.x, relativeEyePos.y, line1.x, line1.y) || !castLine(relativeEyePos.x, relativeEyePos.y, line2.x, line2.y)) // casts rays and if they don't hit anything it does the movement functionality
 		{
 			//printf("xpos: %f ypos: %f\n", animalPos.x, animalPos.y); // for debug
 
-			Xdif = (WINDOW_WIDTH / 2) - (static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE)); // finds rough difference between BEAR and player THIS IS BEAR SPECIFIC // has to be rough otherwise stuffs up code below (I think)
-			Ydif = (WINDOW_HEIGHT / 2) - (static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE)); // assumes player is always in the centre (they should be?)
-			//printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
+			if (state == 0 || state == 1 || state == 3)
+			{
+				Xdif = (WINDOW_WIDTH / 2) - (static_cast<int>(animalPos.x) - GameC::camera.x + (18 * SCALE)); // finds rough difference between BEAR and player THIS IS BEAR SPECIFIC // has to be rough otherwise stuffs up code below (I think)
+				Ydif = (WINDOW_HEIGHT / 2) - (static_cast<int>(animalPos.y) - GameC::camera.y + (11 * SCALE)); // assumes player is always in the centre (they should be?)
+			}
+			else
+			{
+				Xdif = (WINDOW_WIDTH / 2) - (static_cast<int>(animalPos.x) - GameC::camera.x + (10 * SCALE));
+				Ydif = (WINDOW_HEIGHT / 2) - (static_cast<int>(animalPos.y) - GameC::camera.y + (13 * SCALE));
+			}
+			
+																										   
+			printf("Xdif: %d Ydif: %d\n", Xdif, Ydif);
 			//printf("destRect.w / 2: %d\n", (destRect.w / 2));
 
 			if (firstLoop) // upon the bear first seeing the player the movement state is set depending on which coordinate (x or y) has the greater difference. This direction will be moved in first
@@ -159,9 +173,13 @@ void AnimalBehaviour::update()
 				{
 					if (!x2) {
 						state = 2;
+						transform->position.x += (8 * SCALE); // magic numbers
+						transform->position.y -= (2 * SCALE);
 					}
 					else {
 						state = 4;
+						transform->position.x += (8 * SCALE);
+						transform->position.y -= (2 * SCALE);
 					}
 				}
 
@@ -273,17 +291,39 @@ void AnimalBehaviour::update()
 				y2 = false;
 			}
 
-			//printf("state before: %d\n", state); // debug
+			printf("state before: %d\n", state); // debug
 			
 			if (state == 1 && x1) // this is the state comtrol structure. Once the movement is complete this decides which state the bear should be in for next frame.  
 			{
 				if (!y1) // switches the state between x state and the appropriate y states unless all y states are complete in which case the next x state is selected 
 				{
 					state = 2;
+					transform->position.x += (8 * SCALE); // magic numbers
+					transform->position.y -= (2 * SCALE);
+
+					if (Ydif > 0)
+					{
+						sprite->Play("WalkDown");
+					}
+					else
+					{
+						sprite->Play("WalkUp");
+					}
 				}
 				else if(!y2)
 				{
 					state = 4;
+					transform->position.x += (8 * SCALE);
+					transform->position.y -= (2 * SCALE);
+
+					if (Ydif > 0)
+					{
+						sprite->Play("WalkDown");
+					}
+					else
+					{
+						sprite->Play("WalkUp");
+					}
 				}
 				else
 				{
@@ -295,10 +335,32 @@ void AnimalBehaviour::update()
 				if (!x1)
 				{
 					state = 1;
+					transform->position.x -= (8 * SCALE);
+					transform->position.y += (2 * SCALE);
+
+					if (Xdif > 0)
+					{
+						sprite->Play("WalkRight");
+					}
+					else
+					{
+						sprite->Play("WalkLeft");
+					}
 				}
 				else if (!x2)
 				{
 					state = 3;
+					transform->position.x -= (8 * SCALE);
+					transform->position.y += (2 * SCALE);
+
+					if (Xdif > 0)
+					{
+						sprite->Play("WalkRight");
+					}
+					else
+					{
+						sprite->Play("WalkLeft");
+					}
 				}
 				else
 				{
@@ -310,10 +372,23 @@ void AnimalBehaviour::update()
 				if (!y1)
 				{
 					state = 2;
+					transform->position.x += (8 * SCALE);
+					transform->position.y -= (2 * SCALE);
 				}
 				else
 				{
 					state = 4;
+					transform->position.x += (8 * SCALE);
+					transform->position.y -= (2 * SCALE);
+				}
+
+				if (Ydif > 0)
+				{
+					sprite->Play("WalkDown");
+				}
+				else
+				{
+					sprite->Play("WalkUp");
 				}
 			}
 			else if (state == 4 && y2) // switches the state between y state and the appropriate x states
@@ -321,10 +396,23 @@ void AnimalBehaviour::update()
 				if (!x1)
 				{
 					state = 1;
+					transform->position.x -= (8 * SCALE);
+					transform->position.y += (2 * SCALE);
 				}
 				else
 				{
 					state = 3;
+					transform->position.x -= (8 * SCALE);
+					transform->position.y += (2 * SCALE);
+				}
+
+				if (Xdif > 0)
+				{
+					sprite->Play("WalkRight");
+				}
+				else
+				{
+					sprite->Play("WalkLeft");
 				}
 			}
 
@@ -337,7 +425,7 @@ void AnimalBehaviour::update()
 				state = 2;
 			}
 
-			//printf("state after: %d\n", state); // debug
+			printf("state after: %d\n", state); // debug
 		}
 		else // ensure the right animation plays once movement finsihes
 		{
@@ -360,6 +448,9 @@ void AnimalBehaviour::update()
 				sprite->Play("IdleUp");
 			}
 		}
+
+		//printf("Bear pos end. x: %f, y: %f\n", transform->position.x, transform->position.y);
+
 	}
 	else
 	{
